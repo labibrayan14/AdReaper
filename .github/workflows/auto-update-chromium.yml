@@ -18,7 +18,7 @@ jobs:
       - name: Delete everything except .github and config
         run: |
           shopt -s extglob
-          rm -rf !(.github|config)
+          rm -rf !(.github|config|.gitattributes)
 
       - name: Commit cleanup
         run: |
