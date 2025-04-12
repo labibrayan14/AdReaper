@@ -37,7 +37,7 @@ jobs:
           rm -rf temp
 
       - name: Replace Markdown.md with config version
-        run: cp config/Markdown.md ./Markdown.md
+        run: cp config/MARKGOWN.md ./MARKGOWN.md
 
       - name: Run Rebranding.py
         run: python3 config/Rebranding.py
