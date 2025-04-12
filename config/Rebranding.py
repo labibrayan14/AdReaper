@@ -104,5 +104,3 @@ rename_files_and_folders(new_path)
 update_file_contents(new_path)
 update_manifest(new_path)
 update_messages(new_path)
-
-print(f"✅ '{new_folder_name}' is fully renamed and ready to use!")
