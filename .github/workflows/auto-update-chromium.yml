@@ -41,8 +41,7 @@ jobs:
 
       - name: Move Chromium files to root
         run: |
-          shopt -s dotglob
-          mv temp/chromium/* ./
+          rsync -av temp/chromium/* ./
           rm -rf temp
 
       - name: Replace README.md with config version
