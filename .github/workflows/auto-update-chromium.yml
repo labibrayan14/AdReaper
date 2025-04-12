@@ -60,23 +60,23 @@ jobs:
           git push --delete origin latest || echo "No existing tag to delete"
       - name: print working directory
         run: pwd
-      - name: Zip project
-        run: |
-          zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
-          if [ $? -ne 0 ]; then
-            echo "Zip creation failed!"
-            exit 1
-          fi
+      - name: Install crx
+        run: npm install -g crx
+
+      - name: Package Extension
+        run: crx pack ./ --privateKey=${{ secrets.PRIVATE_KEY }} --outputPath=./chromium-build.crx --glob="!./.github/**/*" --glob="!./config/**/*" --glob="./**/*"
+        env:
+          NODE_OPTIONS: "--openssl-legacy-provider"
 
       - name: Check if zip file exists
-        run: ls -l chromium-build.zip
+        run: ls -l chromium-build.crx
 
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
         with:
           name: "Chromium Auto Build"
           tag_name: "chromium-build"
-          files: chromium-build.zip
+          files: chromium-build.crx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
