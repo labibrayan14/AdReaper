@@ -1,4 +1,3 @@
-# .github/workflows/auto-update.yml
 name: Auto Update Chromium Build
 
 on:
@@ -57,13 +56,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Delete release if exists
           gh release delete latest -y || echo "No existing release to delete"
-          # Delete tag if exists
           git push --delete origin latest || echo "No existing tag to delete"
+      - name: print working directory
+        run: pwd
       - name: Zip project
         run: |
           zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
+          if [ $? -ne 0 ]; then
+            echo "Zip creation failed!"
+            exit 1
+          fi
+
+      - name: Check if zip file exists
+        run: ls -l chromium-build.zip
 
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
@@ -72,7 +78,7 @@ jobs:
           tag_name: "chromium-build"
           files: chromium-build.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit final state
         run: |
