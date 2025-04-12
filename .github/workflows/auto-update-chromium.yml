@@ -2,6 +2,7 @@
 name: Auto Update Chromium Build
 
 on:
+  repository_dispatch:
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight every day
   workflow_dispatch: # Add this line to enable manual triggering
@@ -25,6 +26,14 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add -A
           git commit -m "Clean up repository for fresh Chromium update" || echo "No changes to commit"
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Commit cleanup push
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
           git push
 
       - name: Clone Chromium repo
@@ -36,7 +45,7 @@ jobs:
           mv temp/chromium/* ./
           rm -rf temp
 
-      - name: Replace README.md with config/README.md
+      - name: Replace README.md with config version
         run: cp config/README.md ./README.md
 
       - name: Run Rebranding.py
