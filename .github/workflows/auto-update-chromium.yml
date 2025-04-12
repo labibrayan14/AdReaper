@@ -28,7 +28,7 @@ jobs:
           git commit -m "Clean up repository for fresh Chromium update" || echo "No changes to commit"
 
       - name: Pull latest changes
-        run: git pull origin main
+        run: git pull --no-rebase origin main
 
       - name: Commit cleanup push
         run: |
