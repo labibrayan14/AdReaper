@@ -77,9 +77,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete source code archives
         run: |
-          gh release upload "chromium-build-${{ github.run_number }}" --clobber
-          gh release delete-asset "chromium-build-${{ github.run_number }}" "source.zip"
-          gh release delete-asset "chromium-build-${{ github.run_number }}" "source.tar.gz"
+          gh release delete-asset "chromium-build" "source.zip"
+          gh release delete-asset "chromium-build" "source.tar.gz"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
