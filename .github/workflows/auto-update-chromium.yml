@@ -61,14 +61,18 @@ jobs:
           gh release delete latest -y || echo "No existing release to delete"
           # Delete tag if exists
           git push --delete origin latest || echo "No existing tag to delete"
+      - name: Zip project
+        run: |
+          zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
         with:
           name: "Chromium Auto Build"
           tag_name: "chromium-build"
+          files: chromium-build.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
 
       - name: Commit final state
         run: |
