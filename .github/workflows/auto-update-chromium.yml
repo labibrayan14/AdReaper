@@ -62,13 +62,17 @@ jobs:
         run: pwd
       - name: Install crx
         run: npm install -g crx@latest
+
+      - name: Create Private Key File
+        run: echo "${{ secrets.PRIVATE_KEY }}" > mykey.pem
+
       - name: Package Extension
-        run: crx pack ./ --privateKey=${{ secrets.PRIVATE_KEY }} --outputPath=./chromium-build.crx --glob="!./.github/**/*" --glob="!./config/**/*" --glob="./**/*"
+        run: crx pack ./ --privateKey=./mykey.pem --outputPath=./chromium-build.crx --glob="!./.github/**/*" --glob="!./config/**/*" --glob="./**/*"
         env:
           NODE_OPTIONS: "--openssl-legacy-provider"
 
-      - name: Check if crx file exists
-        run: ls -l chromium-build.crx
+      - name: Remove Private Key File
+        run: rm mykey.pem
 
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
