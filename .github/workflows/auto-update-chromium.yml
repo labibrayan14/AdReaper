@@ -2,73 +2,73 @@
 name: Auto Update Chromium Build
 
 on:
-  repository_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # Runs weekly at midnight every day
+    - cron: '0 0 * * *'  # Runs daily at midnight every day
+  workflow_dispatch: # Add this line to enable manual triggering
 
 jobs:
   update-chromium:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout current repo
-      uses: actions/checkout@v3
+      - name: Checkout current repo
+        uses: actions/checkout@v3
 
-    - name: Delete everything except .github and config
-      run: |
-        shopt -s extglob
-        rm -rf !(.github|config)
+      - name: Delete everything except .github and config
+        run: |
+          shopt -s extglob
+          rm -rf !(.github|config)
 
-    - name: Commit cleanup
-      run: |
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-        git add -A
-        git commit -m "Clean up repository for fresh Chromium update" || echo "No changes to commit"
-        git push
+      - name: Commit cleanup
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add -A
+          git commit -m "Clean up repository for fresh Chromium update" || echo "No changes to commit"
+          git push
 
-    - name: Clone Chromium repo
-      run: git clone https://github.com/uBlockOrigin/uBOL-home.git temp
+      - name: Clone Chromium repo
+        run: git clone https://github.com/uBlockOrigin/uBOL-home.git temp
 
-    - name: Move Chromium files to root
-      run: |
-        shopt -s dotglob
-        mv chromium/* ./
-        rm -rf chromium
+      - name: Move Chromium files to root
+        run: |
+          shopt -s dotglob
+          mv temp/chromium/* ./
+          rm -rf temp
 
-    - name: Replace Markdown.md with config version
-      run: cp config/Markdown.md ./Markdown.md
+      - name: Replace Markdown.md with config version
+        run: cp config/Markdown.md ./Markdown.md
 
-    - name: Run Rebranding.py
-      run: python3 config/Rebranding.py
+      - name: Run Rebranding.py
+        run: python3 config/Rebranding.py
 
-    - name: Run injector.py
-      run: python3 config/injector.py
+      - name: Run injector.py
+        run: python3 config/injector.py
 
-    - name: Zip project
-      run: |
-        zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
-    - name: Delete existing release and tag if exists
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # Delete release if exists
-        gh release delete latest -y || echo "No existing release to delete"
-        # Delete tag if exists
-        git push --delete origin latest || echo "No existing tag to delete"
+      - name: Zip project
+        run: |
+          zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
 
+      - name: Delete existing release and tag if exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Delete release if exists
+          gh release delete latest -y || echo "No existing release to delete"
+          # Delete tag if exists
+          git push --delete origin latest || echo "No existing tag to delete"
 
-    - name: Create GitHub Release and upload zip
-      uses: softprops/action-gh-release@v1
-      with:
-        name: "Chromium Auto Build"
-        tag_name: "latest"
-        files: chromium-build.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release and upload zip
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "Chromium Auto Build"
+          tag_name: "latest"
+          files: chromium-build.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Commit final state
-      run: |
-        git add -A
-        git commit -m "Final update after Chromium processing" || echo "No changes to commit"
-        git push
+      - name: Commit final state
+        run: |
+          git add -A
+          git commit -m "Final update after Chromium processing" || echo "No changes to commit"
+          git push
