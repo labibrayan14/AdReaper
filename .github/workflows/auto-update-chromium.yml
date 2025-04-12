@@ -54,10 +54,6 @@ jobs:
       - name: Run injector.py
         run: python3 config/injector.py
 
-      - name: Zip project
-        run: |
-          zip -r chromium-build.zip . -x "*.git*" -x "chromium-build.zip"
-
       - name: Delete existing release and tag if exists
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,18 +63,11 @@ jobs:
           # Delete tag if exists
           git push --delete origin latest || echo "No existing tag to delete"
 
-      - name: Create GitHub Release and upload zip
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: "Chromium Auto Build"
           tag_name: "chromium-build"
-          files: chromium-pack.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Delete source code archives
-        run: |
-          gh release delete-asset "chromium-build" "chromium-build.zip"
-          gh release delete-asset "chromium-build" "chromium-build.tar.gz"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
