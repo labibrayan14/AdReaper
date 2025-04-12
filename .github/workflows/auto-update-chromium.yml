@@ -72,13 +72,13 @@ jobs:
         with:
           name: "Chromium Auto Build"
           tag_name: "chromium-build"
-          files: chromium-build.zip
+          files: chromium-pack.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete source code archives
         run: |
-          gh release delete-asset "chromium-build" "source.zip"
-          gh release delete-asset "chromium-build" "source.tar.gz"
+          gh release delete-asset "chromium-build" "chromium-build.zip"
+          gh release delete-asset "chromium-build" "chromium-build.tar.gz"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
