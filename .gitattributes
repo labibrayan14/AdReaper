@@ -1,0 +1,4 @@
+.github/ export-ignore
+config/ export-ignore
+.github/*.yml
+config/* export-ignore
