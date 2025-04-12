@@ -3,7 +3,6 @@ name: Auto Update Chromium Build
 
 on:
   repository_dispatch:
-    types: [run-chromium-update]
   schedule:
     - cron: '0 0 * * *'  # Runs weekly at midnight every day
 
