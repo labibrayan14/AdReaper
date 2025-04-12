@@ -36,8 +36,8 @@ jobs:
           mv temp/chromium/* ./
           rm -rf temp
 
-      - name: Replace Markdown.md with config version
-        run: cp config/MARKGOWN.md ./MARKGOWN.md
+      - name: Replace README.md with config/README.md
+        run: cp config/README.md ./README.md
 
       - name: Run Rebranding.py
         run: python3 config/Rebranding.py
