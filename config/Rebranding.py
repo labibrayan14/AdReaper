@@ -4,7 +4,7 @@ import re
 import shutil
 
 
-new_path = "./temp/"
+new_path = "./"
 
 
 # 🔹 Old and New Names (Fix Order to Prevent Conflicts)
