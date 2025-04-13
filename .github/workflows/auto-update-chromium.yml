@@ -60,19 +60,22 @@ jobs:
           git push --delete origin latest || echo "No existing tag to delete"
       - name: print working directory
         run: pwd
-      - name: Install crx
-        run: npm install -g crx@latest
 
       - name: Create Private Key File
-        run: echo "${{ secrets.PRIVATE_KEY }}" > mykey.pem
+        run: echo "${{ secrets.PRIVATE_KEY }}" > key.pem
 
-      - name: Package Extension
-        run: crx pack ./ --privateKey=./mykey.pem --outputPath=./chromium-build.crx --glob="!./.github/**/*" --glob="!./config/**/*" --glob="./**/*"
-        env:
-          NODE_OPTIONS: "--openssl-legacy-provider"
+      - name: Install Chromium
+        run: |
+          sudo apt update
+          sudo apt install -y chromium-browser
+
+      # Step 4: Pack the Chrome Extension
+      - name: Pack the Chrome Extension
+        run: |
+          google-chrome --pack-extension=./ --pack-extension-key=key.pem
 
       - name: Remove Private Key File
-        run: rm mykey.pem
+        run: rm key.pem
 
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
