@@ -87,7 +87,7 @@ jobs:
 
       - name: CleanUp
         run: |
-          rm packingDir
+          rm -rf packingDir
           rm key.pem
 
       - name: Create GitHub Release and upload zip
