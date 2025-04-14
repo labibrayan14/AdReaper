@@ -89,8 +89,10 @@ jobs:
         run: |
           rm -rf packingDir
           rm key.pem
+          rm google-chrome-stable_current_amd64.deb || echo "No .deb file to delete"
 
-      - name: Create GitHub Release and upload zip
+
+      - name: Create GitHub Release and upload .crx
         uses: softprops/action-gh-release@v1
         with:
           name: "Chromium Auto Build"
