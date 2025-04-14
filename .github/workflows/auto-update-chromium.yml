@@ -64,10 +64,10 @@ jobs:
       - name: Create Private Key File
         run: echo "${{ secrets.PRIVATE_KEY }}" > key.pem
 
-      - name: Install Chromium
+      - name: Install Google Chrome for Packing
         run: |
           sudo apt update
-          sudo apt install -y wget unzip xvfb libxss1 libappindicator3-1 libasound2
+          sudo apt install -y wget unzip xvfb libxss1 libappindicator3-1 libasound2t64
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
