@@ -63,7 +63,13 @@ jobs:
 
       - name: Create Private Key File
         run: echo "${{ secrets.PRIVATE_KEY }}" > key.pem
-
+        
+      - name: Copy all file to a new folder for packing
+        run: |
+          mkdir packingDir
+          rsync -av --exclude='.github' --exclude='config' --exclude='key.pem'  ./ ./packingDir/
+        
+        
       - name: Install Google Chrome for Packing
         run: |
           sudo apt update
@@ -74,10 +80,15 @@ jobs:
       # Step 4: Pack the Chrome Extension
       - name: Pack the Chrome Extension
         run: |
-          google-chrome --pack-extension=./ --pack-extension-key=key.pem
+          google-chrome --pack-extension=./packingDir/ --pack-extension-key=key.pem
+      - name: Rename CRX Output
+        run: |
+          mv packingDir.crx chromium-build.crx || mv *.crx chromium-build.crx
 
-      - name: Remove Private Key File
-        run: rm key.pem
+      - name: CleanUp
+        run: |
+          rm packingDir
+          rm key.pem
 
       - name: Create GitHub Release and upload zip
         uses: softprops/action-gh-release@v1
