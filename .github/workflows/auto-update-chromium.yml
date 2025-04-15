@@ -76,8 +76,7 @@ jobs:
 
       - name: Update XML version
         run: |
-          python update_version.py
-          
+          python config/update_version.py
         
       - name: Install Google Chrome for Packing
         run: |
