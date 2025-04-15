@@ -49,6 +49,27 @@ a {
   }
 }
 
+button {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  span {
+    margin-left: 8px; // Space for emoji
+  }
+}
+
 footer {
   background-color: $secondary-color;
   color: $accent-color;
