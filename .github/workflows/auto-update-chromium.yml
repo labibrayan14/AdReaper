@@ -68,7 +68,16 @@ jobs:
         run: |
           mkdir packingDir
           rsync -av --exclude='.github' --exclude='config' --exclude='key.pem'  ./ ./packingDir/
-        
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install xmltodict
+
+      - name: Update XML version
+        run: |
+          python update_version.py
+          
         
       - name: Install Google Chrome for Packing
         run: |
