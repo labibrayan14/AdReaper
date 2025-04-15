@@ -95,22 +95,14 @@ jobs:
       - name: Rename CRX Output
         run: |
           mv packingDir.crx chromium-build.crx || mv *.crx chromium-build.crx
-
+      - name: Move CRX file to docs folder
+        run: |
+          mv chromium-build.crx ./docs/
       - name: CleanUp
         run: |
           rm -rf packingDir
           rm key.pem
           rm google-chrome-stable_current_amd64.deb || echo "No .deb file to delete"
-
-
-      - name: Create GitHub Release and upload .crx
-        uses: softprops/action-gh-release@v1
-        with:
-          name: "Chromium Auto Build"
-          tag_name: "chromium-build"
-          files: chromium-build.crx
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit final state
         run: |
