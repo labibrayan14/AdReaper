@@ -1,3 +1,4 @@
+[![Auto Update Chromium Build](https://github.com/labibrayan14/AdReaper/actions/workflows/auto-update-chromium.yml/badge.svg)](https://github.com/labibrayan14/AdReaper/actions/workflows/auto-update-chromium.yml)
 # AdReaper 💀
 
 AdReaper is a powerful browser extension designed to eliminate intrusive advertisements, enhancing your browsing experience. It offers flexible installation options, catering to both ease of use and developer customization.
