@@ -77,6 +77,9 @@ jobs:
       - name: Update XML version
         run: |
           python config/update_version.py
+      - name : Include update url in manifiest.json
+        run: |
+          python config/update_manifest.py
         
       - name: Install Google Chrome for Packing
         run: |
