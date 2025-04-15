@@ -1,0 +1,21 @@
+// assets/css/style.scss
+
+// Simple CSS reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Body style
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+// Header style
+h1 {
+  color: #3498db;
+  text-align: center;
+}
