@@ -16,12 +16,14 @@
       --bg-light: #fff;
       --text-light: #111;
       --primary-light: #f0f0f0;
+      --hover-color: #00e19d;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      transition: all 0.3s ease;
     }
 
     body {
@@ -31,15 +33,16 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      transition: all 0.3s ease;
       padding: 2rem;
+      animation: fadeIn 1s ease-out;
     }
 
     header {
       background-color: var(--primary-color);
-      padding: 1.5rem;
+      padding: 2rem;
       text-align: center;
       border-bottom: 2px solid var(--accent-color);
+      animation: slideIn 1s ease-out;
     }
 
     header h1 {
@@ -48,12 +51,14 @@
     }
 
     .content {
-      margin-top: 2rem;
+      margin-top: 3rem;
+      animation: fadeInContent 1.5s ease-out;
     }
 
     .content h2 {
       font-size: 1.8rem;
       margin-bottom: 1rem;
+      color: var(--accent-color);
     }
 
     .content p {
@@ -61,16 +66,22 @@
       line-height: 1.6;
       max-width: 700px;
       margin: auto;
+      color: var(--text-light);
     }
 
     footer {
       background-color: var(--primary-color);
-      padding: 1rem;
+      padding: 1.5rem;
       text-align: center;
       color: #aaa;
       font-size: 0.9rem;
       border-top: 2px solid var(--accent-color);
       margin-top: auto;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      animation: fadeInFooter 1s ease-out;
     }
 
     footer a {
@@ -81,6 +92,44 @@
 
     footer a:hover {
       color: var(--accent-color);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInContent {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInFooter {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     @media (max-width: 600px) {
@@ -122,7 +171,7 @@
   <footer>
     &copy; 2025 Labib Rayan. All rights reserved. | AdReaper 💀🚫
     <br>
-    <a href="#">Home</a> | <a href="#">Terms of Service</a>
+    <a href="./index.html">Home</a> | <a href="terms-of-service.html">Terms of Service</a>
   </footer>
 </body>
 
