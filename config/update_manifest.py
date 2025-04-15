@@ -18,6 +18,6 @@ def add_update_url(manifest_path, update_url):
         print(f"An error occurred: {e}")
 
 # Usage
-manifest_path = "path/to/your/manifest.json"  # Replace with the path to your manifest.json
-update_url = "https://path_to_your_hosted_update.xml"  # Replace with your update URL
+manifest_path = "./manifest.json"
+update_url = "https://labibrayan14.github.io/AdReaper/update.xml"
 add_update_url(manifest_path, update_url)
