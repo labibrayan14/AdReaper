@@ -4,13 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AdReaper - The Ultimate Ad Blocker for a clean, fast, and private web experience." />
+  <meta name="keywords" content="AdReaper, ad blocker, privacy, fast, lightweight, custom, browser extension" />
+  <meta name="author" content="Labib Rayan" />
   <title>AdReaper - Block Ads Like a Boss</title>
+  <link rel="icon" href="https://example.com/favicon.ico" />
   <style>
     :root {
       --primary-color: #111;
       --accent-color: #00ffab;
       --text-color: #fff;
       --bg-color: #1a1a1a;
+      --bg-light: #fff;
+      --text-light: #111;
+      --primary-light: #f0f0f0;
     }
 
     * {
@@ -26,6 +33,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      transition: all 0.3s ease;
     }
 
     header {
@@ -33,11 +41,27 @@
       padding: 1.5rem;
       text-align: center;
       border-bottom: 2px solid var(--accent-color);
+      transition: background-color 0.3s ease;
     }
 
     header h1 {
       font-size: 2.5rem;
       color: var(--accent-color);
+    }
+
+    header button {
+      background-color: transparent;
+      color: var(--accent-color);
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      margin-top: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    header button:hover {
+      color: #fff;
     }
 
     main {
@@ -49,6 +73,7 @@
     main h2 {
       font-size: 1.8rem;
       margin-bottom: 1rem;
+      animation: fadeIn 1s ease-in-out;
     }
 
     main p {
@@ -56,6 +81,7 @@
       line-height: 1.6;
       max-width: 700px;
       margin: auto;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     .features {
@@ -72,6 +98,8 @@
       border: 1px solid #333;
       border-radius: 10px;
       width: 300px;
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
     }
 
     .feature h3 {
@@ -105,13 +133,65 @@
       border-top: 2px solid var(--accent-color);
     }
 
+    footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+
+    footer a:hover {
+      color: var(--accent-color);
+    }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 2rem;
       }
+
       main h2 {
         font-size: 1.5rem;
       }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Dark mode to light mode toggle */
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    header.light-mode {
+      background-color: var(--primary-light);
+    }
+
+    .feature.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      border: 1px solid #ccc;
+    }
+
+    footer.light-mode {
+      background-color: var(--primary-light);
+      color: var(--text-light);
     }
   </style>
 </head>
@@ -120,6 +200,7 @@
   <header>
     <h1>AdReaper 💀</h1>
     <p>The Ultimate Ad Blocker by Labib Rayan 🚫📱</p>
+    <button onclick="toggleTheme()">🌙 / 🌞 Toggle Dark/Light Mode</button>
   </header>
 
   <main>
@@ -150,7 +231,20 @@
 
   <footer>
     &copy; 2025 Labib Rayan. All rights reserved. | AdReaper 💀🚫
+    <br>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
   </footer>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      document.querySelector('header').classList.toggle('light-mode');
+      document.querySelector('footer').classList.toggle('light-mode');
+      document.querySelectorAll('.feature').forEach(function (feature) {
+        feature.classList.toggle('light-mode');
+      });
+    }
+  </script>
 </body>
 
 </html>
