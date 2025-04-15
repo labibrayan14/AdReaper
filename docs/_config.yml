@@ -1,6 +1,12 @@
-title: My Jekyll Site
-description: A simple Jekyll site with SCSS support.
-theme: jekyll-theme-primer
+title: AdReaper
+description: The Ultimate Adblocker Solution
+baseurl: ""
+url: "https://labibrayan14.github.io/AdReaper"
+theme: jekyll-theme-minimal
+
+# Enable SCSS Support
+sass:
+  style: compressed
 
 # Set the source folder for Jekyll to the docs folder
 source: docs
@@ -8,6 +14,11 @@ source: docs
 # Destination folder where the built site will go
 destination: docs/_site
 
-# Enable Sass converter for SCSS
-sass:
-  style: compressed
+# Enable Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Markdown Extensions
+markdown: kramdown
+highlighter: rouge
