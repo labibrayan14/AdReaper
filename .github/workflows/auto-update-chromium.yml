@@ -14,10 +14,10 @@ jobs:
       - name: Checkout current repo
         uses: actions/checkout@v3
 
-      - name: Delete everything except .github and config
+      - name: Delete everything except .github, docs and config
         run: |
           shopt -s extglob
-          rm -rf !(.github|config|.gitattributes)
+          rm -rf !(.github|config|.gitattributes|docs)
 
       - name: Commit cleanup
         run: |
