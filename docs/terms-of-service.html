@@ -4,126 +4,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Terms of Service for AdReaper - The Ultimate Ad Blocker" />
-  <title>Terms of Service - AdReaper</title>
-  <link rel="icon" href="https://example.com/favicon.ico" />
+  <meta name="robots" content="noindex" />
+  <title>Terms of Service | AdReaper</title>
   <style>
     :root {
-      --primary-color: #111;
-      --accent-color: #00ffab;
-      --text-color: #fff;
-      --bg-color: #1a1a1a;
-      --bg-light: #fff;
-      --text-light: #111;
-      --primary-light: #f0f0f0;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --bg: #121212;
+      --text: #f2f2f2;
+      --accent: #00ffab;
+      --card: #1e1e1e;
+      --light-bg: #f9f9f9;
+      --light-text: #222;
+      --light-card: #fff;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      transition: all 0.3s ease;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
       padding: 2rem;
     }
 
     header {
-      background-color: var(--primary-color);
-      padding: 1.5rem;
       text-align: center;
-      border-bottom: 2px solid var(--accent-color);
+      padding: 2rem 1rem 1rem;
+      border-bottom: 2px solid var(--accent);
     }
 
-    header h1 {
-      font-size: 2.5rem;
-      color: var(--accent-color);
+    h1 {
+      color: var(--accent);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
     }
 
-    .content {
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    section {
+      background: var(--card);
+      padding: 2rem;
       margin-top: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
     }
 
-    .content h2 {
-      font-size: 1.8rem;
+    h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    p {
       margin-bottom: 1rem;
     }
 
-    .content p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: auto;
-    }
-
     footer {
-      background-color: var(--primary-color);
-      padding: 1rem;
       text-align: center;
-      color: #aaa;
       font-size: 0.9rem;
-      border-top: 2px solid var(--accent-color);
-      margin-top: auto;
-    }
-
-    footer a {
+      padding: 2rem 1rem;
       color: #aaa;
+    }
+
+    a {
+      color: var(--accent);
       text-decoration: none;
-      margin: 0 0.5rem;
     }
 
-    footer a:hover {
-      color: var(--accent-color);
+    a:hover {
+      text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      .content h2 {
-        font-size: 1.5rem;
-      }
+    /* Light Mode */
+    body.light-mode {
+      background: var(--light-bg);
+      color: var(--light-text);
+    }
+
+    body.light-mode section {
+      background: var(--light-card);
+    }
+
+    body.light-mode header {
+      border-bottom-color: var(--accent);
+    }
+
+    body.light-mode footer {
+      color: #444;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>AdReaper Terms of Service</h1>
-  </header>
+  <div class="container">
+    <header>
+      <h1>Terms of Service</h1>
+      <p>Effective Date: April 16, 2025</p>
+      <button class="toggle-btn" onclick="toggleTheme()">🌙 / 🌞 Toggle Theme</button>
+    </header>
 
-  <div class="content">
-    <h2>Introduction</h2>
-    <p>By using the AdReaper extension, you agree to the following Terms of Service. Please read these terms carefully before using our extension. If you disagree with any part of these terms, you should not use the extension.</p>
+    <section>
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By downloading, installing, or using AdReaper, you agree to be bound by these Terms of Service. If you do not agree with any part of the terms, you may not use the extension.
+      </p>
 
-    <h2>License to Use</h2>
-    <p>We grant you a non-exclusive, non-transferable license to use AdReaper on your personal devices. This license is for personal use only and cannot be distributed, sold, or modified in any way without our consent.</p>
+      <h2>2. Use of the Extension</h2>
+      <p>
+        You are granted a limited, non-exclusive, non-transferable license to use AdReaper for personal, non-commercial purposes. You may not modify, reverse engineer, or redistribute the extension without permission from the author.
+      </p>
 
-    <h2>Acceptable Use</h2>
-    <p>You agree to use AdReaper for lawful purposes only. You may not use the extension to engage in any illegal activity or interfere with the operation of the extension or its services.</p>
+      <h2>3. No Warranty</h2>
+      <p>
+        AdReaper is provided "as is" and without warranties of any kind. We do not guarantee uninterrupted operation, complete ad blocking, or compatibility with every website.
+      </p>
 
-    <h2>Prohibited Activities</h2>
-    <p>You may not reverse engineer, decompile, or attempt to extract the source code of the extension, except as permitted by law. Additionally, you may not use the extension for malicious purposes or distribute malware.</p>
+      <h2>4. Limitation of Liability</h2>
+      <p>
+        Labib Rayan will not be held liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use AdReaper.
+      </p>
 
-    <h2>Limitation of Liability</h2>
-    <p>AdReaper is provided "as is" without warranties of any kind. We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the extension.</p>
+      <h2>5. Modifications</h2>
+      <p>
+        We reserve the right to update or modify these terms at any time. Changes will be effective upon posting to this page. It is your responsibility to review the terms periodically.
+      </p>
 
-    <h2>Modification of Terms</h2>
-    <p>We reserve the right to update or modify these Terms of Service at any time. We will notify users of significant changes to these terms, and continued use of the extension will indicate your acceptance of the updated terms.</p>
+      <h2>6. Termination</h2>
+      <p>
+        We reserve the right to suspend or terminate your access to AdReaper at our sole discretion, without prior notice, if you violate these terms.
+      </p>
+
+      <h2>7. Governing Law</h2>
+      <p>
+        These Terms of Service are governed by and interpreted in accordance with the laws of your local jurisdiction.
+      </p>
+
+      <h2>8. Contact</h2>
+      <p>
+        For any questions about these terms, please contact:
+        <br /><strong>Email:</strong> <a href="mailto:labibrayan14@gmail.com">labibrayan14@gmail.com</a>
+      </p>
+    </section>
+
+    <footer>
+      &copy; 2025 Labib Rayan | <a href="./index.html">Back to Home</a>
+    </footer>
   </div>
 
-  <footer>
-    &copy; 2025 Labib Rayan. All rights reserved. | AdReaper 💀🚫
-    <br>
-    <a href="./index.html">Home</a> | <a href="privacy-policy.html">Privacy Policy</a>
-  </footer>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 </body>
 
 </html>
