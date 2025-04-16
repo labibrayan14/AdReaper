@@ -4,175 +4,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Privacy Policy for AdReaper - The Ultimate Ad Blocker" />
-  <title>Privacy Policy - AdReaper</title>
-  <link rel="icon" href="https://example.com/favicon.ico" />
+  <meta name="robots" content="noindex" />
+  <title>Privacy Policy | AdReaper</title>
   <style>
     :root {
-      --primary-color: #111;
-      --accent-color: #00ffab;
-      --text-color: #fff;
-      --bg-color: #1a1a1a;
-      --bg-light: #fff;
-      --text-light: #111;
-      --primary-light: #f0f0f0;
-      --hover-color: #00e19d;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      transition: all 0.3s ease;
+      --bg: #121212;
+      --text: #f2f2f2;
+      --accent: #00ffab;
+      --card: #1e1e1e;
+      --light-bg: #f9f9f9;
+      --light-text: #222;
+      --light-card: #fff;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
       padding: 2rem;
-      animation: fadeIn 1s ease-out;
     }
 
     header {
-      background-color: var(--primary-color);
-      padding: 2rem;
       text-align: center;
-      border-bottom: 2px solid var(--accent-color);
-      animation: slideIn 1s ease-out;
+      padding: 2rem 1rem 1rem;
+      border-bottom: 2px solid var(--accent);
     }
 
-    header h1 {
-      font-size: 2.5rem;
-      color: var(--accent-color);
+    h1 {
+      color: var(--accent);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
     }
 
-    .content {
-      margin-top: 3rem;
-      animation: fadeInContent 1.5s ease-out;
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
     }
 
-    .content h2 {
-      font-size: 1.8rem;
+    .toggle-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    section {
+      background: var(--card);
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+
+    h2 {
+      color: var(--accent);
       margin-bottom: 1rem;
-      color: var(--accent-color);
+      font-size: 1.5rem;
     }
 
-    .content p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: auto;
-      color: var(--text-light);
+    p {
+      margin-bottom: 1rem;
     }
 
     footer {
-      background-color: var(--primary-color);
-      padding: 1.5rem;
       text-align: center;
-      color: #aaa;
       font-size: 0.9rem;
-      border-top: 2px solid var(--accent-color);
-      margin-top: auto;
-      position: sticky;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      animation: fadeInFooter 1s ease-out;
-    }
-
-    footer a {
+      padding: 2rem 1rem;
       color: #aaa;
+    }
+
+    a {
+      color: var(--accent);
       text-decoration: none;
-      margin: 0 0.5rem;
     }
 
-    footer a:hover {
-      color: var(--accent-color);
+    a:hover {
+      text-decoration: underline;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+    /* Light Mode */
+    body.light-mode {
+      background: var(--light-bg);
+      color: var(--light-text);
     }
 
-    @keyframes slideIn {
-      from {
-        transform: translateY(-50px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    body.light-mode section {
+      background: var(--light-card);
     }
 
-    @keyframes fadeInContent {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+    body.light-mode header {
+      border-bottom-color: var(--accent);
     }
 
-    @keyframes fadeInFooter {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      .content h2 {
-        font-size: 1.5rem;
-      }
+    body.light-mode footer {
+      color: #444;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>AdReaper Privacy Policy</h1>
-  </header>
+  <div class="container">
+    <header>
+      <h1>Privacy Policy</h1>
+      <p>Effective Date: April 16, 2025</p>
+      <button class="toggle-btn" onclick="toggleTheme()">🌙 / 🌞 Toggle Theme</button>
+    </header>
 
-  <div class="content">
-    <h2>Introduction</h2>
-    <p>At AdReaper, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our ad-blocking extension.</p>
+    <section>
+      <h2>1. Introduction</h2>
+      <p>
+        Welcome to AdReaper. Your privacy is very important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our extension.
+      </p>
 
-    <h2>Information We Collect</h2>
-    <p>We do not collect or store any personally identifiable information from our users. AdReaper operates locally on your device and does not track your browsing activity. We do not share or sell any data to third parties.</p>
+      <h2>2. Information We Do NOT Collect</h2>
+      <p>
+        We want to make this absolutely clear: <strong>AdReaper does not collect, store, or share any personal data.</strong> We do not track your browsing history, your IP address, or any other identifiable information.
+      </p>
 
-    <h2>How We Use Your Data</h2>
-    <p>Since AdReaper does not collect any personal data, we do not use, store, or share any of your data. The extension solely functions to block ads and enhance your browsing experience without accessing any sensitive information.</p>
+      <h2>3. Local Processing Only</h2>
+      <p>
+        All filtering and blocking happens locally in your browser. There is no communication with external servers. This ensures your data stays private and secure.
+      </p>
 
-    <h2>Data Security</h2>
-    <p>As we do not collect or store any user data, there are no security concerns related to data storage. However, we do recommend that you regularly update your browser and extension for improved security.</p>
+      <h2>4. No Ads, No Trackers</h2>
+      <p>
+        AdReaper is built to protect you from ads and trackers, not to become one. We will never inject ads or harvest your data.
+      </p>
 
-    <h2>Your Rights</h2>
-    <p>Since we do not collect personal information, there are no rights to access, modify, or delete data. If you have any questions or concerns, feel free to contact us through our support page.</p>
+      <h2>5. Third-Party Services</h2>
+      <p>
+        AdReaper does not rely on any third-party analytics or advertising services. You're fully protected within the scope of this extension.
+      </p>
 
-    <h2>Changes to This Privacy Policy</h2>
-    <p>We may update this Privacy Policy occasionally to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify users of any significant changes.</p>
+      <h2>6. Permissions</h2>
+      <p>
+        The permissions requested by the extension are strictly necessary for its functionality. We do not misuse these permissions in any way.
+      </p>
+
+      <h2>7. Changes to This Policy</h2>
+      <p>
+        We may occasionally update this policy. If we do, the updated policy will be posted on this page with the revised effective date. You are advised to review this page periodically.
+      </p>
+
+      <h2>8. Contact Us</h2>
+      <p>
+        If you have any questions about this Privacy Policy, you can reach out to:
+        <br /><strong>Email:</strong> <a href="mailto:labibrayan14@gmail.com">labibrayan14@gmail.com</a>
+      </p>
+    </section>
+
+    <footer>
+      &copy; 2025 Labib Rayan | <a href="./index.html">Back to Home</a>
+    </footer>
   </div>
 
-  <footer>
-    &copy; 2025 Labib Rayan. All rights reserved. | AdReaper 💀🚫
-    <br>
-    <a href="./index.html">Home</a> | <a href="terms-of-service.html">Terms of Service</a>
-  </footer>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 </body>
 
 </html>
