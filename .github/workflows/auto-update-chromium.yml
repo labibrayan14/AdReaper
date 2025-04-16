@@ -73,8 +73,12 @@ jobs:
         run: |
           cd packingDir
           zip -r ../AdReaper.zip .
+          clear
+          ls
           cd ..
-      
+      - name : show files 
+        run : ls
+        
       - name: CleanUp
         run: |
           rm -rf packingDir
