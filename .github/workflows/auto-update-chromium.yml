@@ -72,7 +72,7 @@ jobs:
       - name : Zip the extention
         run: |
           cd packingDir
-          zip -r ../output.zip .
+          zip -r ../AdReaper.zip .
           cd ..
       
       - name: CleanUp
