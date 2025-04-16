@@ -245,7 +245,6 @@
   <header>
     <h1>AdReaper</h1>
     <p>The Ultimate Ad Blocker by Labib Rayan</p>
-    <button onclick="toggleTheme()">🌙 / 🌞 Toggle Dark/Light Mode</button>
   </header>
 
   <main>
@@ -292,16 +291,6 @@
     <a href="./privacy-policy.html">Privacy Policy</a> |
     <a href="./terms-of-service.html">Terms of Service</a>
   </footer>
-
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('light-mode');
-      document.querySelector('header').classList.toggle('light-mode');
-      document.querySelector('footer').classList.toggle('light-mode');
-      document.querySelectorAll('.feature').forEach(el => el.classList.toggle('light-mode'));
-      document.querySelectorAll('section').forEach(el => el.classList.toggle('light-mode'));
-    }
-  </script>
 </body>
 
 </html>
