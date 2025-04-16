@@ -4,121 +4,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thanks for Installing - AdReaper 💀</title>
+  <meta name="robots" content="noindex" />
+  <title>Thanks for Downloading | AdReaper</title>
   <style>
     :root {
-      --primary-color: #111;
-      --accent-color: #00ffab;
-      --text-color: #fff;
-      --bg-color: #1a1a1a;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --bg: #121212;
+      --text: #f2f2f2;
+      --accent: #00ffab;
+      --card: #1e1e1e;
+      --light-bg: #f9f9f9;
+      --light-text: #222;
+      --light-card: #fff;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
       display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.3s, color 0.3s;
     }
 
-    header {
-      background-color: var(--primary-color);
-      padding: 1.5rem;
+    .container {
       text-align: center;
-      border-bottom: 2px solid var(--accent-color);
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      color: var(--accent-color);
-    }
-
-    main {
-      flex: 1;
+      max-width: 800px;
       padding: 2rem;
-      text-align: center;
+      border-radius: 10px;
+      background: var(--card);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
-    main h2 {
-      font-size: 1.8rem;
+    h1 {
+      color: var(--accent);
+      font-size: 2.5rem;
       margin-bottom: 1rem;
     }
 
-    main p {
+    p {
       font-size: 1.2rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 1rem auto;
+      margin-bottom: 2rem;
     }
 
-    .thanks {
-      margin-top: 2rem;
-      font-size: 1.5rem;
-      color: var(--accent-color);
+    .button {
+      background-color: var(--accent);
+      color: #000;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .button:hover {
+      background-color: #00e19d;
     }
 
     footer {
-      background-color: var(--primary-color);
-      padding: 1rem;
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
       text-align: center;
       color: #aaa;
-      font-size: 0.9rem;
-      border-top: 2px solid var(--accent-color);
     }
 
-    .close-btn {
-      background-color: var(--accent-color);
-      color: var(--primary-color);
-      font-size: 1.2rem;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: background-color 0.3s ease;
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    .close-btn:hover {
-      background-color: #00cc99;
+    footer a:hover {
+      text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      main h2 {
-        font-size: 1.5rem;
-      }
+    /* Light Mode */
+    body.light-mode {
+      background: var(--light-bg);
+      color: var(--light-text);
+    }
+
+    body.light-mode .container {
+      background: var(--light-card);
+    }
+
+    body.light-mode footer {
+      color: #444;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>AdReaper 💀</h1>
-    <p>Thank you for choosing AdReaper by Labib Rayan 🚫📱</p>
-  </header>
+  <div class="container">
+    <h1>Thank You for Downloading AdReaper!</h1>
+    <p>You're now ready to enjoy a faster, ad-free, and more private browsing experience! 🌿</p>
 
-  <main>
-    <h2>You're All Set! 🎉</h2>
-    <p>
-      Thanks for installing <strong>AdReaper</strong>. Say goodbye to annoying ads and hello to a cleaner, faster, and more private browsing experience.
-    </p>
-    <p class="thanks">Enjoy the peace. You deserve it. 🌿💪</p>
-    <!-- Close Button -->
-    <button class="close-btn" onclick="window.close();">Close Tab</button>
-  </main>
+    <a href="index.html" class="button">Back to Homepage</a>
+  </div>
 
-  <footer>
-    &copy; 2025 Labib Rayan. All rights reserved. | AdReaper 💀🚫
-  </footer>
 </body>
 
 </html>
