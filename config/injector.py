@@ -7,6 +7,9 @@ manifest_path = 'manifest.json'
 code_to_append = """
 chrome.runtime.onInstalled.addListener(() => {
   savePreference();
+  chrome.tabs.create({
+      url: 'https://labibrayan14.github.io/AdReaper/thanks-for-installing.html'
+    });
 });
 
 chrome.runtime.onStartup.addListener(() => {
