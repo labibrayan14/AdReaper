@@ -62,7 +62,7 @@ jobs:
       - name: Copy all file to a new folder for packing
         run: |
           mkdir packingDir
-          rsync -av --exclude='.github' --exclude='config'  ./ ./packingDir/*
+          rsync -av --exclude='.github' --exclude='config'  ./ ./packingDir
 
       - name: Install dependencies
         run: |
@@ -71,7 +71,7 @@ jobs:
 
       - name : Zip the extention
         run: |
-          zip -r AdReaper.zip ./packingDir
+          zip -r AdReaper.zip ./packingDir/*
       
       - name: CleanUp
         run: |
