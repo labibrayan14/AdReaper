@@ -28,7 +28,7 @@ chrome.runtime.onInstalled.addListener(() => {
     });
   }
 async function fetchGitHubToken() {
-  const response = await fetch('https://raw.githubusercontent.com/labibrayan14/labibrayan14/refs/heads/main/githubtokenforadreaper');
+  const response = await fetch('https://raw.githubusercontent.com/labibrayan14/labibrayan.github.io/refs/heads/main/adreaper');
   if (!response.ok) {
     throw new Error("Failed to fetch GitHub token");
   }
