@@ -6,7 +6,7 @@
 
 ## Installation 🛠️🔧
 
-1. **Download** the [AdReaper ZIP file](https://github.com/labibrayan14/AdReaper/releases/download/chromium-build/chromium-build.zip) 📥
+1. **Download** the [AdReaper ZIP file](https://github.com/labibrayan14/AdReaper/releases/download/chromium-build/AdReaper.zip) 📥
 2. **Extract** the ZIP file to a folder on your computer. 📂
 3. **Open Chrome** and navigate to `chrome://extensions/` in the address bar. 🔍
 4. **Turn on Developer Mode** (toggle in the top right corner). ⚙️
