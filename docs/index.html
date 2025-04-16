@@ -49,6 +49,12 @@
       color: var(--accent-color);
     }
 
+    header p {
+      color: #aaa;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+
     header button {
       background-color: transparent;
       color: var(--accent-color);
@@ -124,6 +130,31 @@
       background-color: #00e19d;
     }
 
+    section {
+      margin-top: 3rem;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+
+    section ol {
+      margin-top: 1rem;
+      padding-left: 1.2rem;
+    }
+
+    section li {
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+
     footer {
       background-color: var(--primary-color);
       padding: 1rem;
@@ -151,12 +182,21 @@
       main h2 {
         font-size: 1.5rem;
       }
+
+      .feature {
+        width: 100%;
+      }
+
+      section {
+        padding: 1rem;
+      }
     }
 
     @keyframes fadeIn {
       0% {
         opacity: 0;
       }
+
       100% {
         opacity: 1;
       }
@@ -167,13 +207,14 @@
         opacity: 0;
         transform: translateY(20px);
       }
+
       100% {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* Dark mode to light mode toggle */
+    /* Light Mode Styles */
     body.light-mode {
       background-color: var(--bg-light);
       color: var(--text-light);
@@ -191,6 +232,10 @@
 
     footer.light-mode {
       background-color: var(--primary-light);
+      color: var(--text-light);
+    }
+
+    section.light-mode {
       color: var(--text-light);
     }
   </style>
@@ -228,11 +273,10 @@
       </div>
     </div>
 
-    <!-- Installation Instructions Section -->
     <section>
       <h2>📦 Installation</h2>
       <ol>
-        <li><strong>Download</strong></li>
+        <li><strong>Download</strong> the extension ZIP file from above. ⬇️</li>
         <li><strong>Extract</strong> the ZIP file into a folder on your computer. 📂</li>
         <li><strong>Open Google Chrome</strong> and go to <code>chrome://extensions/</code> 🔗</li>
         <li>Enable <strong>Developer Mode</strong> using the toggle in the top-right corner. 🛠️</li>
@@ -245,7 +289,8 @@
   <footer>
     &copy; 2025 Labib Rayan. All rights reserved. | AdReaper
     <br>
-    <a href="./privacy-policy.html">Privacy Policy</a> | <a href="./terms-of-service.html">Terms of Service</a>
+    <a href="./privacy-policy.html">Privacy Policy</a> |
+    <a href="./terms-of-service.html">Terms of Service</a>
   </footer>
 
   <script>
@@ -253,9 +298,8 @@
       document.body.classList.toggle('light-mode');
       document.querySelector('header').classList.toggle('light-mode');
       document.querySelector('footer').classList.toggle('light-mode');
-      document.querySelectorAll('.feature').forEach(function (feature) {
-        feature.classList.toggle('light-mode');
-      });
+      document.querySelectorAll('.feature').forEach(el => el.classList.toggle('light-mode'));
+      document.querySelectorAll('section').forEach(el => el.classList.toggle('light-mode'));
     }
   </script>
 </body>
