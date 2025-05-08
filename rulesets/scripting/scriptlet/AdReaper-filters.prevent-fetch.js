@@ -1,0 +1,553 @@
+/*******************************************************************************
+
+    AdReaper - a comprehensive, MV3-compliant content blocker
+    Copyright (C) 2014-present Labib Rayan
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see {http://www.gnu.org/licenses/}.
+
+    Home: https://github.com/Labibrayan14/AdReaper
+
+*/
+
+// ruleset: AdReaper-filters
+
+// Important!
+// Isolate from global scope
+
+// Start of local scope
+(function uBOL_preventFetch() {
+
+/******************************************************************************/
+
+function preventFetch(...args) {
+    preventFetchFn(false, ...args);
+}
+
+function preventFetchFn(
+    trusted = false,
+    propsToMatch = '',
+    responseBody = '',
+    responseType = ''
+) {
+    const safe = safeSelf();
+    const scriptletName = `${trusted ? 'trusted-' : ''}prevent-fetch`;
+    const logPrefix = safe.makeLogPrefix(
+        scriptletName,
+        propsToMatch,
+        responseBody,
+        responseType
+    );
+    const needles = [];
+    for ( const condition of safe.String_split.call(propsToMatch, /\s+/) ) {
+        if ( condition === '' ) { continue; }
+        const pos = condition.indexOf(':');
+        let key, value;
+        if ( pos !== -1 ) {
+            key = condition.slice(0, pos);
+            value = condition.slice(pos + 1);
+        } else {
+            key = 'url';
+            value = condition;
+        }
+        needles.push({ key, pattern: safe.initPattern(value, { canNegate: true }) });
+    }
+    const validResponseProps = {
+        ok: [ false, true ],
+        statusText: [ '', 'Not Found' ],
+        type: [ 'basic', 'cors', 'default', 'error', 'opaque' ],
+    };
+    const responseProps = {
+        statusText: { value: 'OK' },
+    };
+    if ( /^\{.*\}$/.test(responseType) ) {
+        try {
+            Object.entries(JSON.parse(responseType)).forEach(([ p, v ]) => {
+                if ( validResponseProps[p] === undefined ) { return; }
+                if ( validResponseProps[p].includes(v) === false ) { return; }
+                responseProps[p] = { value: v };
+            });
+        }
+        catch { }
+    } else if ( responseType !== '' ) {
+        if ( validResponseProps.type.includes(responseType) ) {
+            responseProps.type = { value: responseType };
+        }
+    }
+    proxyApplyFn('fetch', function fetch(context) {
+        const { callArgs } = context;
+        const details = callArgs[0] instanceof self.Request
+            ? callArgs[0]
+            : Object.assign({ url: callArgs[0] }, callArgs[1]);
+        let proceed = true;
+        try {
+            const props = new Map();
+            for ( const prop in details ) {
+                let v = details[prop];
+                if ( typeof v !== 'string' ) {
+                    try { v = safe.JSON_stringify(v); }
+                    catch { }
+                }
+                if ( typeof v !== 'string' ) { continue; }
+                props.set(prop, v);
+            }
+            if ( safe.logLevel > 1 || propsToMatch === '' && responseBody === '' ) {
+                const out = Array.from(props).map(a => `${a[0]}:${a[1]}`);
+                safe.uboLog(logPrefix, `Called: ${out.join('\n')}`);
+            }
+            if ( propsToMatch === '' && responseBody === '' ) {
+                return context.reflect();
+            }
+            proceed = needles.length === 0;
+            for ( const { key, pattern } of needles ) {
+                if (
+                    pattern.expect && props.has(key) === false ||
+                    safe.testPattern(pattern, props.get(key)) === false
+                ) {
+                    proceed = true;
+                    break;
+                }
+            }
+        } catch {
+        }
+        if ( proceed ) {
+            return context.reflect();
+        }
+        return Promise.resolve(generateContentFn(trusted, responseBody)).then(text => {
+            safe.uboLog(logPrefix, `Prevented with response "${text}"`);
+            const response = new Response(text, {
+                headers: {
+                    'Content-Length': text.length,
+                }
+            });
+            const props = Object.assign(
+                { url: { value: details.url } },
+                responseProps
+            );
+            safe.Object_defineProperties(response, props);
+            return response;
+        });
+    });
+}
+
+function generateContentFn(trusted, directive) {
+    const safe = safeSelf();
+    const randomize = len => {
+        const chunks = [];
+        let textSize = 0;
+        do {
+            const s = safe.Math_random().toString(36).slice(2);
+            chunks.push(s);
+            textSize += s.length;
+        }
+        while ( textSize < len );
+        return chunks.join(' ').slice(0, len);
+    };
+    if ( directive === 'true' ) {
+        return randomize(10);
+    }
+    if ( directive === 'emptyObj' ) {
+        return '{}';
+    }
+    if ( directive === 'emptyArr' ) {
+        return '[]';
+    }
+    if ( directive === 'emptyStr' ) {
+        return '';
+    }
+    if ( directive.startsWith('length:') ) {
+        const match = /^length:(\d+)(?:-(\d+))?$/.exec(directive);
+        if ( match === null ) { return ''; }
+        const min = parseInt(match[1], 10);
+        const extent = safe.Math_max(parseInt(match[2], 10) || 0, min) - min;
+        const len = safe.Math_min(min + extent * safe.Math_random(), 500000);
+        return randomize(len | 0);
+    }
+    if ( directive.startsWith('war:') ) {
+        if ( scriptletGlobals.warOrigin === undefined ) { return ''; }
+        return new Promise(resolve => {
+            const warOrigin = scriptletGlobals.warOrigin;
+            const warName = directive.slice(4);
+            const fullpath = [ warOrigin, '/', warName ];
+            const warSecret = scriptletGlobals.warSecret;
+            if ( warSecret !== undefined ) {
+                fullpath.push('?secret=', warSecret);
+            }
+            const warXHR = new safe.XMLHttpRequest();
+            warXHR.responseType = 'text';
+            warXHR.onloadend = ev => {
+                resolve(ev.target.responseText || '');
+            };
+            warXHR.open('GET', fullpath.join(''));
+            warXHR.send();
+        }).catch(( ) => '');
+    }
+    if ( trusted ) {
+        return directive;
+    }
+    return '';
+}
+
+function proxyApplyFn(
+    target = '',
+    handler = ''
+) {
+    let context = globalThis;
+    let prop = target;
+    for (;;) {
+        const pos = prop.indexOf('.');
+        if ( pos === -1 ) { break; }
+        context = context[prop.slice(0, pos)];
+        if ( context instanceof Object === false ) { return; }
+        prop = prop.slice(pos+1);
+    }
+    const fn = context[prop];
+    if ( typeof fn !== 'function' ) { return; }
+    if ( proxyApplyFn.CtorContext === undefined ) {
+        proxyApplyFn.ctorContexts = [];
+        proxyApplyFn.CtorContext = class {
+            constructor(...args) {
+                this.init(...args);
+            }
+            init(callFn, callArgs) {
+                this.callFn = callFn;
+                this.callArgs = callArgs;
+                return this;
+            }
+            reflect() {
+                const r = Reflect.construct(this.callFn, this.callArgs);
+                this.callFn = this.callArgs = this.private = undefined;
+                proxyApplyFn.ctorContexts.push(this);
+                return r;
+            }
+            static factory(...args) {
+                return proxyApplyFn.ctorContexts.length !== 0
+                    ? proxyApplyFn.ctorContexts.pop().init(...args)
+                    : new proxyApplyFn.CtorContext(...args);
+            }
+        };
+        proxyApplyFn.applyContexts = [];
+        proxyApplyFn.ApplyContext = class {
+            constructor(...args) {
+                this.init(...args);
+            }
+            init(callFn, thisArg, callArgs) {
+                this.callFn = callFn;
+                this.thisArg = thisArg;
+                this.callArgs = callArgs;
+                return this;
+            }
+            reflect() {
+                const r = Reflect.apply(this.callFn, this.thisArg, this.callArgs);
+                this.callFn = this.thisArg = this.callArgs = this.private = undefined;
+                proxyApplyFn.applyContexts.push(this);
+                return r;
+            }
+            static factory(...args) {
+                return proxyApplyFn.applyContexts.length !== 0
+                    ? proxyApplyFn.applyContexts.pop().init(...args)
+                    : new proxyApplyFn.ApplyContext(...args);
+            }
+        };
+    }
+    const fnStr = fn.toString();
+    const toString = (function toString() { return fnStr; }).bind(null);
+    const proxyDetails = {
+        apply(target, thisArg, args) {
+            return handler(proxyApplyFn.ApplyContext.factory(target, thisArg, args));
+        },
+        get(target, prop) {
+            if ( prop === 'toString' ) { return toString; }
+            return Reflect.get(target, prop);
+        },
+    };
+    if ( fn.prototype?.constructor === fn ) {
+        proxyDetails.construct = function(target, args) {
+            return handler(proxyApplyFn.CtorContext.factory(target, args));
+        };
+    }
+    context[prop] = new Proxy(fn, proxyDetails);
+}
+
+function safeSelf() {
+    if ( scriptletGlobals.safeSelf ) {
+        return scriptletGlobals.safeSelf;
+    }
+    const self = globalThis;
+    const safe = {
+        'Array_from': Array.from,
+        'Error': self.Error,
+        'Function_toStringFn': self.Function.prototype.toString,
+        'Function_toString': thisArg => safe.Function_toStringFn.call(thisArg),
+        'Math_floor': Math.floor,
+        'Math_max': Math.max,
+        'Math_min': Math.min,
+        'Math_random': Math.random,
+        'Object': Object,
+        'Object_defineProperty': Object.defineProperty.bind(Object),
+        'Object_defineProperties': Object.defineProperties.bind(Object),
+        'Object_fromEntries': Object.fromEntries.bind(Object),
+        'Object_getOwnPropertyDescriptor': Object.getOwnPropertyDescriptor.bind(Object),
+        'Object_hasOwn': Object.hasOwn.bind(Object),
+        'RegExp': self.RegExp,
+        'RegExp_test': self.RegExp.prototype.test,
+        'RegExp_exec': self.RegExp.prototype.exec,
+        'Request_clone': self.Request.prototype.clone,
+        'String': self.String,
+        'String_fromCharCode': String.fromCharCode,
+        'String_split': String.prototype.split,
+        'XMLHttpRequest': self.XMLHttpRequest,
+        'addEventListener': self.EventTarget.prototype.addEventListener,
+        'removeEventListener': self.EventTarget.prototype.removeEventListener,
+        'fetch': self.fetch,
+        'JSON': self.JSON,
+        'JSON_parseFn': self.JSON.parse,
+        'JSON_stringifyFn': self.JSON.stringify,
+        'JSON_parse': (...args) => safe.JSON_parseFn.call(safe.JSON, ...args),
+        'JSON_stringify': (...args) => safe.JSON_stringifyFn.call(safe.JSON, ...args),
+        'log': console.log.bind(console),
+        // Properties
+        logLevel: 0,
+        // Methods
+        makeLogPrefix(...args) {
+            return this.sendToLogger && `[${args.join(' \u205D ')}]` || '';
+        },
+        uboLog(...args) {
+            if ( this.sendToLogger === undefined ) { return; }
+            if ( args === undefined || args[0] === '' ) { return; }
+            return this.sendToLogger('info', ...args);
+            
+        },
+        uboErr(...args) {
+            if ( this.sendToLogger === undefined ) { return; }
+            if ( args === undefined || args[0] === '' ) { return; }
+            return this.sendToLogger('error', ...args);
+        },
+        escapeRegexChars(s) {
+            return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        },
+        initPattern(pattern, options = {}) {
+            if ( pattern === '' ) {
+                return { matchAll: true, expect: true };
+            }
+            const expect = (options.canNegate !== true || pattern.startsWith('!') === false);
+            if ( expect === false ) {
+                pattern = pattern.slice(1);
+            }
+            const match = /^\/(.+)\/([gimsu]*)$/.exec(pattern);
+            if ( match !== null ) {
+                return {
+                    re: new this.RegExp(
+                        match[1],
+                        match[2] || options.flags
+                    ),
+                    expect,
+                };
+            }
+            if ( options.flags !== undefined ) {
+                return {
+                    re: new this.RegExp(this.escapeRegexChars(pattern),
+                        options.flags
+                    ),
+                    expect,
+                };
+            }
+            return { pattern, expect };
+        },
+        testPattern(details, haystack) {
+            if ( details.matchAll ) { return true; }
+            if ( details.re ) {
+                return this.RegExp_test.call(details.re, haystack) === details.expect;
+            }
+            return haystack.includes(details.pattern) === details.expect;
+        },
+        patternToRegex(pattern, flags = undefined, verbatim = false) {
+            if ( pattern === '' ) { return /^/; }
+            const match = /^\/(.+)\/([gimsu]*)$/.exec(pattern);
+            if ( match === null ) {
+                const reStr = this.escapeRegexChars(pattern);
+                return new RegExp(verbatim ? `^${reStr}$` : reStr, flags);
+            }
+            try {
+                return new RegExp(match[1], match[2] || undefined);
+            }
+            catch {
+            }
+            return /^/;
+        },
+        getExtraArgs(args, offset = 0) {
+            const entries = args.slice(offset).reduce((out, v, i, a) => {
+                if ( (i & 1) === 0 ) {
+                    const rawValue = a[i+1];
+                    const value = /^\d+$/.test(rawValue)
+                        ? parseInt(rawValue, 10)
+                        : rawValue;
+                    out.push([ a[i], value ]);
+                }
+                return out;
+            }, []);
+            return this.Object_fromEntries(entries);
+        },
+        onIdle(fn, options) {
+            if ( self.requestIdleCallback ) {
+                return self.requestIdleCallback(fn, options);
+            }
+            return self.requestAnimationFrame(fn);
+        },
+        offIdle(id) {
+            if ( self.requestIdleCallback ) {
+                return self.cancelIdleCallback(id);
+            }
+            return self.cancelAnimationFrame(id);
+        }
+    };
+    scriptletGlobals.safeSelf = safe;
+    if ( scriptletGlobals.bcSecret === undefined ) { return safe; }
+    // This is executed only when the logger is opened
+    safe.logLevel = scriptletGlobals.logLevel || 1;
+    let lastLogType = '';
+    let lastLogText = '';
+    let lastLogTime = 0;
+    safe.toLogText = (type, ...args) => {
+        if ( args.length === 0 ) { return; }
+        const text = `[${document.location.hostname || document.location.href}]${args.join(' ')}`;
+        if ( text === lastLogText && type === lastLogType ) {
+            if ( (Date.now() - lastLogTime) < 5000 ) { return; }
+        }
+        lastLogType = type;
+        lastLogText = text;
+        lastLogTime = Date.now();
+        return text;
+    };
+    try {
+        const bc = new self.BroadcastChannel(scriptletGlobals.bcSecret);
+        let bcBuffer = [];
+        safe.sendToLogger = (type, ...args) => {
+            const text = safe.toLogText(type, ...args);
+            if ( text === undefined ) { return; }
+            if ( bcBuffer === undefined ) {
+                return bc.postMessage({ what: 'messageToLogger', type, text });
+            }
+            bcBuffer.push({ type, text });
+        };
+        bc.onmessage = ev => {
+            const msg = ev.data;
+            switch ( msg ) {
+            case 'iamready!':
+                if ( bcBuffer === undefined ) { break; }
+                bcBuffer.forEach(({ type, text }) =>
+                    bc.postMessage({ what: 'messageToLogger', type, text })
+                );
+                bcBuffer = undefined;
+                break;
+            case 'setScriptletLogLevelToOne':
+                safe.logLevel = 1;
+                break;
+            case 'setScriptletLogLevelToTwo':
+                safe.logLevel = 2;
+                break;
+            }
+        };
+        bc.postMessage('areyouready?');
+    } catch {
+        safe.sendToLogger = (type, ...args) => {
+            const text = safe.toLogText(type, ...args);
+            if ( text === undefined ) { return; }
+            safe.log(`AdReaper ${text}`);
+        };
+    }
+    return safe;
+}
+
+/******************************************************************************/
+
+const scriptletGlobals = {}; // eslint-disable-line
+const argsList = [["/\\/\\/ansuksar\\.com\\/[0-9a-zA-Z]{3,26}\\/\\d{4,6}\\b/","length:125746"],["-load.com/script/","length:101"],["method:HEAD"],["googlesyndication"],["marmalade"],["url:ipapi.co"],["doubleclick"],["api"],["cloudflare.com/cdn-cgi/trace"],["/piwik-"],["adsbygoogle"],["toiads"],["/^/"],["player-feedback"],["openx"],["ads"],["googlesyndication","method:HEAD"],["doubleclick","length:10","{\"type\":\"cors\"}"],["damoh.ani-stream.com"],["ujsmediatags method:HEAD"],["/googlesyndication|inklinkor|ads\\/load/"],["googlesyndication","length:2001"],["zomap.de"],["adsafeprotected"],["google"],["url:!luscious.net"],["doubleclick","","{\"type\": \"opaque\"}"],["bmcdn6"],["/adoto|\\/ads\\/js/"],["googletagmanager"],["adsby"],["/veepteero|tag\\.min\\.js/"],["surfe.pro"],["adsbygoogle.js"],["/adsbygoogle|googletagservices/"],["/googlesyndication|doubleclick/","length:10","{\"type\": \"cors\"}"],["/ad\\.doubleclick\\.net|static\\.dable\\.io/"],["popunder"],["doubleclick.net/instream/ad_status.js","war:doubleclick_instream_ad_status.js"],["manager"],["moonicorn.network"],["doubleclick.com","","opaque"],["/ads"],["method:HEAD url:doubleclick.net"],["tvid.in/log"],["/ads|imasdk/"],["cloudfront.net/?"],["/nerveheels/"],["ad"],["analytics"],["wtg-ads"],["/ad-provider"],["googlesyndication","length:10","{\"type\": \"cors\"}"],["googlesyndication","length:10","{\"type\":\"cors\"}"],["/ads|doubleclick/"],["dqst.pl"],["uniconsent.com","length:2300"],["vlitag"],["adsbygoogle","length:11000"],["imasdk"],["tpc.googlesyndication.com"],["gloacmug.net"],["thaudray.com"],["adskeeper"],["/freychang|passback|popunder|tag|banquetunarmedgrater/"],["google-analytics"],["ima"],["imasdk.googleapis.com"],["/adoto|googlesyndication/"],["ad-delivery"],["ima3_dai"],["method:GET"],["/ads|googletagmanager/"],["/doubleclick|googlesyndication/","length:10","{\"type\":\"cors\"}"],["/doubleclick|googlesyndication|vlitag/","length:10","{\"type\": \"cors\"}"],["/api/v1/events"],["cloudfront"],["/outbrain|criteo|thisiswaldo|media\\.net|ohbayersbur|adligature|quantserve|srvtrck|\\.css|\\.js/"],["/googlesyndication|googima\\.js/"],["fwmrm.net"],["ads","length:10","{\"type\": \"cors\"}"],["ads-twitter.com"],["secure.adnxs.com/ptv","war:noop-vast4.xml"],["googlesyndication","war:google-ima.js"],["googlesyndication","","{\"type\":\"cors\"}"],["pogo"],["doubleclick.net"],["/doubleclick|googlesyndication/"],["jssdks.mparticle.com"],["/adinplay|googlesyndication/"],["/outbrain|adligature|quantserve|adligature|srvtrck/"],["youradexchange"],["/clarity|googlesyndication/"],["thanksgivingdelights"],["snigelweb.com"],["cdnpk.net/Rest/Media/","war:noop.json"],["/gampad/ads?"],["googletagmanager","length:10"],["fundingchoicesmessages"],["/googlesyndication|googletagservices/"],["/doubleclick|google-analytics/"],["/ip-acl-all.php"],["/doubleclick|googlesyndication/","length:10","{\"type\": \"cors\"}"],["mode:no-cors"],["googlesyndication","length:40000-60000"],["/rekaa"],["="],["body:browser"],["eventing"],["api.theathletic.com/graphql body:/PostEvent|PostImpressions/"],["method:POST body:zaraz"],["url:/api/statsig/log_event method:POST"],["splunkcloud.com/services/collector"],["event-router.olympics.com"],["hostingcloud.racing"],["tvid.in/log/"],["segment.io"],["mparticle.com"],["pluto.smallpdf.com"],["method:/post/i url:/^https?:\\/\\/chatgpt\\.com\\/ces\\/v1\\/[a-z]$/"],["method:/post/i url:ab.chatgpt.com/v1/rgstr"]];
+const hostnamesMap = new Map([["japscan.lol",0],["dogdrip.net",[1,36]],["infinityfree.com",1],["smsonline.cloud",1],["bg-gledai.*",[2,67]],["gledaitv.*",[2,67]],["mac2sell.net",2],["gamebrew.org",2],["game3rb.com",2],["sixsave.com",2],["bowfile.com",[2,46]],["dealsfinders.blog",2],["iphonechecker.herokuapp.com",2],["coloringpage.eu",2],["conocimientoshackers.com",2],["juegosdetiempolibre.org",2],["karaokegratis.com.ar",2],["mammaebambini.it",2],["riazor.org",2],["rinconpsicologia.com",2],["sempredirebanzai.it",2],["vectogravic.com",2],["androidacy.com",2],["freetohell.com",2],["lifestyle.bg",[2,71]],["news.bg",[2,71]],["topsport.bg",[2,71]],["webcafe.bg",[2,71]],["barstoolsports.com",2],["los40.com",3],["faucetcrypto.com",3],["tea-coffee.net",3],["spatsify.com",3],["newedutopics.com",3],["getviralreach.in",3],["edukaroo.com",3],["funkeypagali.com",3],["careersides.com",3],["nayisahara.com",3],["wikifilmia.com",3],["infinityskull.com",3],["viewmyknowledge.com",3],["iisfvirtual.in",3],["starxinvestor.com",3],["jkssbalerts.com",3],["acetack.com",3],["androidquest.com",3],["apklox.com",3],["chhaprawap.in",3],["gujarativyakaran.com",3],["kashmirstudentsinformation.in",3],["kisantime.com",3],["shetkaritoday.in",3],["pastescript.com",3],["trimorspacks.com",3],["updrop.link",3],["mynewsmedia.co",3],["overgal.com",3],["howtoconcepts.com",3],["ikramlar.online",3],["tpi.li",3],["oii.la",3],["choiceappstore.xyz",3],["djpunjab2.in",3],["djqunjab.in",3],["foodxor.com",3],["geniussolutions.co",3],["mealcold.com",3],["mixrootmods.com",3],["fartechy.com",3],["investcrust.com",3],["bantenexis.com",3],["litonmods.com",3],["universitiesonline.xyz",3],["worldmak.com",3],["updown.fun",3],["m.jobinmeghalaya.in",3],["ghscanner.com",3],["sat.technology",3],["wenxuecity.com",3],["kiwiexploits.com",3],["disheye.com",3],["homeairquality.org",[3,29]],["techtrim.tech",3],["arhplyrics.in",3],["askpaccosi.com",3],["quizack.com",3],["apkandroidhub.in",3],["babymodz.com",3],["deezloaded.com",3],["mad.gplpalace.one",3],["studyis.xyz",3],["chillx.top",3],["prepostseo.com",3],["dulichkhanhhoa.net",3],["noithatmyphu.vn",3],["iptvjournal.com",3],["inbbotlist.com",3],["getintoway.com",3],["crdroid.net",3],["beelink.pro",3],["hax.co.id",3],["woiden.id",3],["theusaposts.com",3],["hackr.io",3],["rendimentibtp.it",3],["sportshub.to",3],["sportnews.to",3],["esopress.com",3],["paketmu.com",3],["watchx.top",3],["bitcosite.com",3],["bitzite.com",3],["coinsrev.com",3],["globlenews.in",3],["programmingeeksclub.com",3],["archivebate.com",3],["doctoraux.com",3],["educationbluesky.com",3],["hotkitchenbag.com",3],["maths.media",3],["maths.news",3],["mathsspot.com",3],["mathsstudio.com",3],["mathstutor.life",3],["now.gg",3],["now.us",3],["nowgg.lol",3],["selfstudybrain.com",3],["skibiditoilet.yourmom.eu.org",3],["thewebsitesbridge.com",3],["universityequality.com",3],["virtualstudybrain.com",3],["websitesball.com",3],["websitesbridge.com",3],["xn--31byd1i.net",3],["unitystr.com",3],["moto.it",3],["wellness4live.com",3],["forplayx.ink",3],["moviesapi.club",3],["bestx.stream",3],["boosterx.stream",3],["automoto.it",3],["olarila.com",3],["techedubyte.com",3],["snapwordz.com",3],["toolxox.com",3],["go2share.net",3],["flixscans.com",3],["animefire.plus",3],["freewsad.com",3],["yt-downloaderz.com",3],["hostmath.com",3],["urlcut.ninja",3],["fplstatistics.co.uk",3],["99corporates.com",3],["fivemdev.org",3],["winlator.com",3],["sabornutritivo.com",3],["metrolagu.cam",3],["megane.com.pl",3],["flixscans.org",3],["civitai.com",3],["civitai.green",3],["streamer4u.site",3],["imagetranslator.io",3],["visnalize.com",3],["tekken8combo.kagewebsite.com",3],["custommapposter.com",3],["scenexe2.io",3],["ncaa.com",3],["gurusiana.id",3],["dichvureviewmap.com",3],["technofino.in",3],["vinstartheme.com",3],["downev.com",3],["vectorx.top",3],["bong.ink",3],["zippyshare.day",3],["modescanlator.net",3],["livexscores.com",3],["btv.bg",3],["btvsport.bg",3],["btvnovinite.bg",3],["101soundboards.com",3],["freedrivemovie.com",3],["leakshaven.com",3],["dfbplay.tv",3],["sheepesports.com",3],["ytapi.cc",3],["evaki.fun",3],["bypass.link",3],["tmail.sys64738.at",3],["laser-pics.com",3],["fsicomics.com",3],["darts-scoring.com",3],["pimylifeup.com",4],["seazon.fr",5],["independent.co.uk",6],["wunderground.com",6],["ctrlv.*",6],["scrolller.com",6],["journaldemontreal.com",6],["tvanouvelles.ca",6],["vods.tv",6],["atresplayer.com",6],["assettoworld.com",6],["vtmgo.be",6],["zerioncc.pl",6],["tradingview.com",6],["estudyme.com",6],["jobfound.org",6],["abs-cbn.com",6],["sussytoons.*",6],["moovitapp.com",6],["servustv.com",6],["missavtv.com",6],["flixbaba.com",6],["formatlibrary.com",6],["business-standard.com",6],["html5.gamedistribution.com",7],["premio.io",8],["flygbussarna.se",9],["allmusic.com",10],["wowescape.com",10],["leechpremium.link",10],["camcam.cc",10],["nohat.cc",10],["hindinews360.in",10],["weshare.is",10],["cyberlynews.com",10],["djremixganna.com",10],["hypicmodapk.org",10],["keedabankingnews.com",10],["rokni.xyz",10],["technicalline.store",10],["quizrent.com",10],["isi7.net",10],["pinloker.com",10],["client.falixnodes.net",10],["sshkit.com",10],["fastssh.com",10],["howdy.id",10],["okiemrolnika.pl",10],["pandadevelopment.net",10],["decrypt.day",10],["anakteknik.co.id",10],["javball.com",10],["visalist.io",10],["rkd3.dev",10],["moviesshub.*",10],["timesofindia.indiatimes.com",[11,115]],["skidrowreloaded.com",12],["pinoyfaucet.com",12],["zone-telechargement.*",12],["topsporter.net",12],["player.glomex.com",13],["htmlgames.com",14],["investing.com",15],["mylivewallpapers.com",15],["softfully.com",15],["reminimod.co",15],["highkeyfinance.com",15],["amanguides.com",15],["adcrypto.net",15],["admediaflex.com",15],["aduzz.com",15],["bitcrypto.info",15],["cdrab.com",15],["datacheap.io",15],["hbz.us",15],["savego.org",15],["owsafe.com",15],["sportweb.info",15],["apkupload.in",15],["ezeviral.com",15],["pngreal.com",15],["ytpng.net",15],["travel.vebma.com",15],["cloud.majalahhewan.com",15],["crm.cekresi.me",15],["ai.tempatwisata.pro",15],["cinedesi.in",15],["thevouz.in",15],["tejtime24.com",15],["techishant.in",15],["mtcremix.com",15],["advicefunda.com",15],["bestloanoffer.net",15],["computerpedia.in",15],["techconnection.in",15],["key-hub.eu",15],["discoveryplus.in",15],["calculator-online.net",15],["tutorial.siberuang.com",15],["dotabuff.com",15],["forum.cstalking.tv",15],["mcqmall.com",15],["witcherhour.com",15],["clamor.pl",15],["ozulscans.com",15],["i-polls.com",15],["insurancevela.com",15],["noor-book.com",15],["wrzesnia.info.pl",15],["pobre.*",15],["compromath.com",15],["sumoweb.to",15],["haloursynow.pl",15],["satkurier.pl",15],["mtg-print.com",15],["gktech.uk",15],["heavy.com",15],["creators.nafezly.com",15],["downloadfilm.website",15],["uploadsea.com",15],["bombuj.*",15],["pornovka.cz",15],["fplstatistics.com",15],["cheater.ninja",15],["govtportal.org",15],["muyinteresante.es",16],["3dzip.org",17],["ani-stream.com",18],["uflash.tv",19],["oko.sh",20],["duden.de",21],["joyn.de",22],["joyn.at",22],["tf1.fr",23],["exe.app",24],["eio.io",24],["ufacw.com",24],["figurehunter.net",24],["luscious.net",25],["starkroboticsfrc.com",26],["sinonimos.de",26],["antonimos.de",26],["quesignifi.ca",26],["tiktokrealtime.com",26],["tiktokcounter.net",26],["tpayr.xyz",26],["poqzn.xyz",26],["ashrfd.xyz",26],["rezsx.xyz",26],["tryzt.xyz",26],["ashrff.xyz",26],["rezst.xyz",26],["dawenet.com",26],["erzar.xyz",26],["waezm.xyz",26],["waezg.xyz",26],["blackwoodacademy.org",26],["cryptednews.space",26],["vivuq.com",26],["swgop.com",26],["vbnmll.com",26],["telcoinfo.online",26],["dshytb.com",26],["quins.us",26],["mdn.lol",27],["bitcotasks.com",27],["btcbitco.in",28],["btcsatoshi.net",28],["cempakajaya.com",28],["crypto4yu.com",28],["gainl.ink",28],["readbitcoin.org",28],["wiour.com",28],["senda.pl",29],["dsmusic.in",30],["apkmoddone.com",31],["tutorialsaya.com",10],["exactpay.online",32],["filesupload.in",33],["hindustantimes.com",33],["indiainfo4u.in",34],["dx-tv.com",35],["javboys.tv",35],["netfuck.net",35],["superpsx.com",35],["hunterscomics.com",35],["tuktukcinma.com",35],["camarchive.tv",37],["cybermania.ws",38],["fapdrop.com",38],["linkpoi.me",39],["platform.adex.network",40],["watch.plex.tv",41],["simplebits.io",42],["tvnz.co.nz",43],["timesnowhindi.com",44],["timesnowmarathi.com",44],["timesofindia.com",44],["elahmad.com",45],["1cloudfile.com",47],["weszlo.com",48],["wyze.com",49],["mmorpg.org.pl",50],["rule34porn.net",51],["crunchyscan.fr",52],["firmwarex.net",53],["dongknows.com",54],["forsal.pl",55],["photopea.com",56],["freeshib.biz",57],["theappstore.org",58],["deutschekanale.com",59],["soranews24.com",60],["ipalibrary.me",61],["ipacrack.com",62],["bravedown.com",63],["smartkhabrinews.com",64],["freepik-downloader.com",65],["freepic-downloader.com",65],["envato-downloader.com",65],["ortograf.pl",66],["mixrootmod.com",68],["explorecams.com",69],["southpark.*",70],["southparkstudios.*",70],["money.bg",71],["realmadryt.pl",71],["ruidrive.com",71],["poophd.video-src.com",71],["myesports.gg",71],["getthit.com",72],["intro-hd.net",73],["souq-design.com",73],["gaypornhot.com",73],["sonixgvn.net",74],["everand.com",75],["workink.click",76],["work.ink",77],["play.nova.bg",78],["u.co.uk",79],["uktvplay.co.uk",79],["uktvplay.uktv.co.uk",79],["jpopsingles.eu",80],["hentaihaven.xxx",81],["imasdk.googleapis.com",82],["botrix.live",83],["gunauc.net",84],["buffsports.me",85],["lemino.docomo.ne.jp",86],["soccerinhd.com",87],["kfc.com",88],["crazygames.com",89],["freeshot.live",90],["plustream.com",91],["hancinema.net",92],["javfc2.xyz",93],["textreverse.com",94],["flaticon.com",95],["shahid.mbc.net",[96,117]],["tab-maker.com",97],["faceittracker.net",98],["fmovies0.cc",99],["nikke.win",100],["stream.offidocs.com",101],["dogsexporn.net",102],["yomucomics.com",102],["sport.es",103],["zone.msn.com",104],["letemsvetemapplem.eu",105],["flixrave.me",106],["search.brave.com",107],["coursera.org",108],["nytimes.com",109],["blog.cloudflare.com",110],["www.cloudflare.com",110],["grok.com",111],["notion.so",112],["olympics.com",113],["ceramic.or.kr",114],["pandadoc.com",116],["smallpdf.com",118],["chatgpt.com",[119,120]]]);
+const exceptionsMap = new Map([]);
+const hasEntities = true;
+const hasAncestors = false;
+
+const collectArgIndices = (hn, map, out) => {
+    let argsIndices = map.get(hn);
+    if ( argsIndices === undefined ) { return; }
+    if ( typeof argsIndices !== 'number' ) {
+        for ( const argsIndex of argsIndices ) {
+            out.add(argsIndex);
+        }
+    } else {
+        out.add(argsIndices);
+    }
+};
+
+const indicesFromHostname = (hostname, suffix = '') => {
+    const hnParts = hostname.split('.');
+    const hnpartslen = hnParts.length;
+    if ( hnpartslen === 0 ) { return; }
+    for ( let i = 0; i < hnpartslen; i++ ) {
+        const hn = `${hnParts.slice(i).join('.')}${suffix}`;
+        collectArgIndices(hn, hostnamesMap, todoIndices);
+        collectArgIndices(hn, exceptionsMap, tonotdoIndices);
+    }
+    if ( hasEntities ) {
+        const n = hnpartslen - 1;
+        for ( let i = 0; i < n; i++ ) {
+            for ( let j = n; j > i; j-- ) {
+                const en = `${hnParts.slice(i,j).join('.')}.*${suffix}`;
+                collectArgIndices(en, hostnamesMap, todoIndices);
+                collectArgIndices(en, exceptionsMap, tonotdoIndices);
+            }
+        }
+    }
+};
+
+const entries = (( ) => {
+    const docloc = document.location;
+    const origins = [ docloc.origin ];
+    if ( docloc.ancestorOrigins ) {
+        origins.push(...docloc.ancestorOrigins);
+    }
+    return origins.map((origin, i) => {
+        const beg = origin.lastIndexOf('://');
+        if ( beg === -1 ) { return; }
+        const hn = origin.slice(beg+3)
+        const end = hn.indexOf(':');
+        return { hn: end === -1 ? hn : hn.slice(0, end), i };
+    }).filter(a => a !== undefined);
+})();
+if ( entries.length === 0 ) { return; }
+
+const todoIndices = new Set();
+const tonotdoIndices = new Set();
+
+indicesFromHostname(entries[0].hn);
+if ( hasAncestors ) {
+    for ( const entry of entries ) {
+        if ( entry.i === 0 ) { continue; }
+        indicesFromHostname(entry.hn, '>>');
+    }
+}
+
+// Apply scriplets
+for ( const i of todoIndices ) {
+    if ( tonotdoIndices.has(i) ) { continue; }
+    try { preventFetch(...argsList[i]); }
+    catch { }
+}
+
+/******************************************************************************/
+
+// End of local scope
+})();
+
+void 0;
