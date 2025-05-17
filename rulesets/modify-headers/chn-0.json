@@ -1,0 +1,258 @@
+[
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": ".html?android=hx*&_"
+ },
+ "id": 1
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": ".xyz/?channelcode="
+ },
+ "id": 2
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": "/dayu2.html?channelcode="
+ },
+ "id": 3
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": "://*:*/chunyu.html?k="
+ },
+ "id": 4
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": "://*:*/yeyue.html?k="
+ },
+ "id": 5
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src 'self' * 'unsafe-inline'"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "1ingatlan.net",
+   "1kans.net",
+   "4hrz.net",
+   "56xiaoshuo.net",
+   "666biquge.com",
+   "aidu123.com",
+   "biqudd.com",
+   "biquge2345.com",
+   "biquge345.com",
+   "biquluo.info",
+   "biquwx.cc",
+   "bqgh.com",
+   "bqug8.com",
+   "candoug.com",
+   "dbrxs.org",
+   "dingdian911.com",
+   "diyibanzhu44444.com",
+   "gaofuwu.org",
+   "haduzw.com",
+   "haitangsoshu.org",
+   "hanziwen.com",
+   "jmshuwu.net",
+   "kaixindu.net",
+   "kunnu.com",
+   "m.6666xsw.com",
+   "m.chenkuan.com",
+   "m.jmshuwu.net",
+   "maxshuku.com",
+   "modaoshu.com",
+   "nipubook.com",
+   "novelser.com",
+   "nuoshuge.com",
+   "puquz.com",
+   "shukuge.com",
+   "smsonline.cloud",
+   "sthuojia.net",
+   "tetservices.net",
+   "tvyun07.com",
+   "wodexiaoshuoh.com",
+   "wuwusk.com",
+   "x33yq.org",
+   "xianguke.net",
+   "ykxs.cc",
+   "yourbiquge.com",
+   "yswxs.com",
+   "yushuwu.cloud"
+  ],
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ]
+ },
+ "id": 6
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ],
+  "urlFilter": "||57577.live^"
+ },
+ "id": 7
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src 'self' *"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "biqugezw.us",
+   "zk01.net"
+  ],
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ]
+ },
+ "id": 8
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src 'self' * 'unsafe-eval'"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "requestDomains": [
+   "chinanewsx.com",
+   "zoukankan.com"
+  ],
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ]
+ },
+ "id": 6368
+},
+{
+ "action": {
+  "responseHeaders": [
+   {
+    "header": "content-security-policy",
+    "operation": "append",
+    "value": "script-src 'self' * 'unsafe-inline'"
+   }
+  ],
+  "type": "modifyHeaders"
+ },
+ "condition": {
+  "requestDomains": [
+   "anixwallpaper.com",
+   "hugo3c.tw"
+  ],
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame"
+  ]
+ },
+ "id": 6369
+}
+]
