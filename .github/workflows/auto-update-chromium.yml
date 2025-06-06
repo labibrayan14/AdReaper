@@ -58,7 +58,10 @@ jobs:
         run: |
           gh release delete latest -y || echo "No existing release to delete"
           git push --delete origin latest || echo "No existing tag to delete"
-
+          
+      - name: Remove old zip if exists
+        run: rm -f AdReaper.zip
+        
       - name: Copy all file to a new folder for packing
         run: |
           mkdir packingDir
