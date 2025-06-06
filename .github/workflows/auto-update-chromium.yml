@@ -17,7 +17,7 @@ jobs:
       - name: Delete everything except .github, docs and config
         run: |
           shopt -s extglob
-          rm -rf !(.github|config|.gitattributes|docs)
+          rm -rf !(.github|config|.gitattributes|docs|.git)
 
       - name: Commit cleanup
         run: |
@@ -65,7 +65,7 @@ jobs:
       - name: Copy all file to a new folder for packing
         run: |
           mkdir packingDir
-          rsync -av --exclude='.github' --exclude='config' --exclude='docs' --exclude='packingDir' ./ ./packingDir
+          rsync -av --exclude='.github' --exclude='config' --exclude='docs' --exclude='.git' --exclude='packingDir' ./ ./packingDir
 
       - name: Install dependencies
         run: |
