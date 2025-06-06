@@ -94,5 +94,6 @@ jobs:
       - name: Commit final state
         run: |
           git add -A
+          git reset AdReaper.zip || true
           git commit -m "Final update after Chromium processing" || echo "No changes to commit"
           git push
