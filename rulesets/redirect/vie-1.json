@@ -1,0 +1,86 @@
+[
+{
+ "action": {
+  "redirect": {
+   "extensionPath": "/web_accessible_resources/noop-1s.mp4"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "phimreview.org"
+  ],
+  "urlFilter": "||phimreview.org/playergk/phimreview.mp4"
+ },
+ "id": 1,
+ "priority": 11
+},
+{
+ "action": {
+  "redirect": {
+   "extensionPath": "/web_accessible_resources/noop-0.1s.mp3"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "phevkl.gg",
+   "viet69.hot"
+  ],
+  "urlFilter": "||i2.vlstorage.com/da88_1080p.mp4"
+ },
+ "id": 2,
+ "priority": 11
+},
+{
+ "action": {
+  "redirect": {
+   "extensionPath": "/web_accessible_resources/noop-0.1s.mp3"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "motchill93.com"
+  ],
+  "urlFilter": "||motchill93.com/3s.m3u8"
+ },
+ "id": 3,
+ "priority": 11
+},
+{
+ "action": {
+  "redirect": {
+   "extensionPath": "/web_accessible_resources/noop-1s.mp4"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "phe18.vip"
+  ],
+  "urlFilter": "||henho24h.net/*.mp4"
+ },
+ "id": 4,
+ "priority": 11
+},
+{
+ "action": {
+  "redirect": {
+   "extensionPath": "/web_accessible_resources/google-ima.js"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "initiatorDomains": [
+   "vtvcab.vn"
+  ],
+  "resourceTypes": [
+   "script"
+  ],
+  "urlFilter": "||on-web-cdn.gviet.vn/public/js/player/ads/ima3.js"
+ },
+ "id": 6,
+ "priority": 11
+}
+]
