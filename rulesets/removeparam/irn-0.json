@@ -1,0 +1,29 @@
+[
+{
+ "action": {
+  "redirect": {
+   "transform": {
+    "queryTransform": {
+     "removeParams": [
+      "bCode",
+      "promo_creative",
+      "promo_name",
+      "promo_position"
+     ]
+    }
+   }
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "resourceTypes": [
+   "main_frame",
+   "sub_frame",
+   "xmlhttprequest"
+  ],
+  "urlFilter": "||dgka.me^"
+ },
+ "id": 1,
+ "priority": 2
+}
+]
