@@ -1,0 +1,450 @@
+{
+  "extName": {
+    "message": "AdReaper",
+    "description": "extension name."
+  },
+  "extShortDesc": {
+    "message": "අවසර අනවශ්‍ය අන්තර්ගත අවහිරකය. ස්ථාපනය කළ වහාම දැන්වීම්, ලුහුබැඳීම්, කැණීම් සහ තවත් දෑ අවහිර කරයි.",
+    "description": "this will be in the Chrome web store: must be 132 characters or less"
+  },
+  "perRulesetStats": {
+    "message": "නීති {{ruleCount}} ක් ජාල පෙරහන් {{filterCount}} කින් හරවා ඇත",
+    "description": "Appears aside each filter list in the _3rd-party filters_ pane"
+  },
+  "dashboardName": {
+    "message": "AdReaper Lite - උපකරණ පුවරුව",
+    "description": "English: AdReaper Lite — Dashboard"
+  },
+  "settingsPageName": {
+    "message": "සැකසුම්",
+    "description": "appears as tab name in dashboard"
+  },
+  "customFiltersPageName": {
+    "message": "Custom filters",
+    "description": "appears as tab name in dashboard"
+  },
+  "developPageName": {
+    "message": "Develop",
+    "description": "appears as tab name in dashboard. Inspired from 'Develop' menu in Safari, see https://developer.apple.com/documentation/safari-developer-tools/develop-menu"
+  },
+  "aboutPageName": {
+    "message": "පිළිබඳ",
+    "description": "appears as tab name in dashboard"
+  },
+  "aboutPrivacyPolicy": {
+    "message": "රහස්‍යතා ප්‍රතිපත්තිය",
+    "description": "Link to privacy policy on GitHub (English)"
+  },
+  "popupFilteringModeLabel": {
+    "message": "පෙරීමේ ප්‍රකාරය",
+    "description": "Label in the popup panel for the current filtering mode"
+  },
+  "popupLocalToolsLabel": {
+    "message": "On this website",
+    "description": "Label in the popup panel for the local tools section"
+  },
+  "popupTipReport": {
+    "message": "මෙම අඩවියේ ගැටලුවක් වාර්තා කරන්න",
+    "description": "Tooltip used for the 'chat' icon in the panel"
+  },
+  "popupTipDashboard": {
+    "message": "උපකරණ පුවරුව අරින්න",
+    "description": "English: Click to open the dashboard"
+  },
+  "popupMoreButton": {
+    "message": "තව",
+    "description": "Label to be used to show popup panel sections"
+  },
+  "popupLessButton": {
+    "message": "අඩුවෙන්",
+    "description": "Label to be used to hide popup panel sections"
+  },
+  "3pGroupDefault": {
+    "message": "පෙරනිමි",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupAds": {
+    "message": "දැන්වීම්",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupPrivacy": {
+    "message": "පෞද්ගලිකත්‍වය",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupMalware": {
+    "message": "අනිෂ්ට මෘදුකාංග ආරක්ෂාව, ආරක්ෂාව",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupAnnoyances": {
+    "message": "පීඩාකාරී",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupMisc": {
+    "message": "වෙනත්",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupRegions": {
+    "message": "කලාපීය, භාෂා",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "3pGroupImported": {
+    "message": "Imported lists",
+    "description": "Header for a ruleset section in 'Filter lists pane'"
+  },
+  "customListImportLabel": {
+    "message": "Add filter list…",
+    "description": "Text label heading the import area of custom filter lists"
+  },
+  "customListImportPlaceholder": {
+    "message": "Paste here the URL of the filter list to add",
+    "description": "Placeholder text which describes the purpose of the textarea widget"
+  },
+  "customFiltersImportExportLabel": {
+    "message": "Import / Export",
+    "description": "Text label heading the import/export area of custom filters"
+  },
+  "customFiltersImportTextareaPlaceholder": {
+    "message": "Paste here specific cosmetic/scriptlet filters to add",
+    "description": "Placeholder text which describes the purpose of the textarea widget"
+  },
+  "userScriptsInfo": {
+    "message": "To enforce cosmetic or scriptlet filters from imported lists, you must grant AdReaper Lite permission to run user scripts. Open your browser's extensions page (<code>chrome://extensions</code> in Chrome or <code>about:addons</code> in Firefox), open <b>AdReaper Lite</b> details, and toggle on <b>Allow user scripts</b> (also referred to as “unverified third-party scripts”).",
+    "description": "A notice to inform user that the enforcement of some filters requires permission to execute 'user scripts'"
+  },
+  "aboutChangelog": {
+    "message": "වෙනස්කම් සටහන",
+    "description": ""
+  },
+  "aboutCode": {
+    "message": "මූලාශ්‍ර කේත (GPLv3)",
+    "description": "English: Source code (GPLv3)"
+  },
+  "aboutContributors": {
+    "message": "දායකයින්",
+    "description": "English: Contributors"
+  },
+  "aboutSourceCode": {
+    "message": "මූලාශ්‍ර කේත",
+    "description": "Link text to source code repo"
+  },
+  "aboutTranslations": {
+    "message": "පරිවර්තන",
+    "description": "Link text to translations repo"
+  },
+  "aboutFilterLists": {
+    "message": "පෙරහන් ලැයිස්තු",
+    "description": "Link text to AdReaper's own filter lists repo"
+  },
+  "aboutDependencies": {
+    "message": "බාහිර පරායත්ත (GPLv3-අනුකූල):",
+    "description": "Shown in the About pane"
+  },
+  "supportS6H": {
+    "message": "පෙරහන් ගැටලු වාර්තා කරන්න",
+    "description": "Header of 'Report a filter issue' section in Support pane"
+  },
+  "supportS3P1": {
+    "message": "නිශ්චිත වෙබ් අඩවි සමඟ පෙරහන් ගැටළු <span data-url=\"https://github.com/uBlockOrigin/uAssets/issues?q=is%3Aissue\"><code>uBlockOrigin/uAssets</code> ගැටළු ට්රැකර්</span>වෙත වාර්තා කරන්න. <u>GitHub ගිණුමක් අවශ්‍යයි.</u>",
+    "description": "First paragraph of 'Filter issues' section in Support pane"
+  },
+  "supportS5H": {
+    "message": "දෝශ නිරාකරණ තොරතුරු",
+    "description": "Label of 'Troubleshooting information' section in 'Report a filter issue' page"
+  },
+  "supportS6P1S1": {
+    "message": "අනුපිටපත් වාර්තා සමඟ ස්වේච්ඡා සේවකයින්ට බරක් වීම වළක්වා ගැනීම සඳහා, කරුණාකර ගැටළුව දැනටමත් වාර්තා කර නොමැති බව තහවුරු කරගන්න. <b>සටහන:</b> බොත්තම ක්ලික් කිරීමෙන් පිටුවේ මූලාරම්භය GitHub වෙත යවනු ලැබේ.",
+    "description": "A paragraph in the filter issue reporter section"
+  },
+  "supportFindSpecificButton": {
+    "message": "සමාන වාර්තා සොයන්න",
+    "description": "A clickable link in the filter issue reporter section"
+  },
+  "supportS6URL": {
+    "message": "අඩවියේ ලිපිනය:",
+    "description": "Label for the URL of the page"
+  },
+  "supportS6Select1": {
+    "message": "වියමන පිටුව…",
+    "description": "Label for widget to select type of issue"
+  },
+  "supportS6Select1Option0": {
+    "message": "-- නිවේශිතයක් තෝරන්න --",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option1": {
+    "message": "දැන්වීම් හෝ දැන්වීම් ඉතිරි කොටස් පෙන්වයි",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option2": {
+    "message": "උඩැතිරි හෝ වෙනත් කරදර ඇති",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option3": {
+    "message": "AdReaper Lite අනාවරණය කරයි",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option4": {
+    "message": "පෞද්ගලිකත්‍වය ආශ්‍රිත ගැටළු තිබේ",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option5": {
+    "message": "AdReaper Lite සක්‍රීය කර ඇති විට සිදුවන අක්‍රමිකතා",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option6": {
+    "message": "අනවශ්‍ය පටිති හෝ කවුළු අරියි",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Select1Option7": {
+    "message": "නරක මෘදුකාංග, තතුබෑම් වලට මග පාදයි",
+    "description": "An entry in the widget used to select the type of issue"
+  },
+  "supportS6Checkbox1": {
+    "message": "වෙබ් පිටුව “NSFW” ලෙස ලේබල් කරන්න (<a href=\"https://wikipedia.org/wiki/Not_safe_for_work\">“වැඩ සඳහා ආරක්ෂිත නොවේ”</a>)",
+    "description": "A checkbox to use for NSFW sites"
+  },
+  "supportReportSpecificButton": {
+    "message": "නව වාර්තාවක් සාදන්න",
+    "description": "Text for button which opens an external web page in Support pane"
+  },
+  "defaultFilteringModeSectionLabel": {
+    "message": "පෙරනිමි පෙරීමේ ප්‍රකාරය",
+    "description": "The header text for the default filtering mode section"
+  },
+  "defaultFilteringModeDescription": {
+    "message": "පෙරනිමි පෙරහන් මාදිලිය එක් එක් වෙබ් අඩවියට පෙරහන් මාදිලි මගින් අභිබවා යනු ඇත. ඔබට ඕනෑම වෙබ් අඩවියක පෙරහන් මාදිලිය එම වෙබ් අඩවියේ වඩාත් හොඳින් ක්‍රියාත්මක වන මාදිලිය අනුව සකස් කළ හැකිය. සෑම මාදිලියකටම එහි වාසි සහ අවාසි ඇත.",
+    "description": "This describes the default filtering mode setting"
+  },
+  "filteringMode0Name": {
+    "message": "පෙරීමක් නැත",
+    "description": "Name of blocking mode 0"
+  },
+  "filteringMode1Name": {
+    "message": "මූලික",
+    "description": "Name of blocking mode 1"
+  },
+  "filteringMode2Name": {
+    "message": "ප්‍රශස්ත",
+    "description": "Name of blocking mode 2"
+  },
+  "filteringMode3Name": {
+    "message": "සම්පූර්ණ",
+    "description": "Name of blocking mode 3"
+  },
+  "basicFilteringModeDescription": {
+    "message": "තෝරාගත් පෙරහන් ලැයිස්තු වලින් මූලික ජාල පෙරහන.\n\nවෙබ් අඩවි වල දත්ත කියවීමට සහ වෙනස් කිරීමට අවසර අවශ්‍ය නොවේ.",
+    "description": "This describes the 'basic' filtering mode"
+  },
+  "optimalFilteringModeDescription": {
+    "message": "තෝරාගත් පෙරහන් ලැයිස්තු වලින් උසස් ජාල පෙරහන් සහ නිශ්චිත දිගු පෙරහන්.\n\nසියලුම වෙබ් අඩවි වල දත්ත කියවීමට සහ වෙනස් කිරීමට පුළුල් අවසරයක් අවශ්‍ය වේ.",
+    "description": "This describes the 'optimal' filtering mode"
+  },
+  "completeFilteringModeDescription": {
+    "message": "තෝරාගත් පෙරහන් ලැයිස්තු වලින් උසස් ජාල පෙරහන් සහ විශේෂිත සහ සාමාන්‍ය දිගු පෙරහන්.\n\nසියලුම වෙබ් අඩවි වල දත්ත කියවීමට සහ වෙනස් කිරීමට පුළුල් අවසරයක් අවශ්‍ය වේ.\n\nසාමාන්‍ය දිගු පෙරහන් මඟින් වෙබ් පිටු සම්පත් භාවිතය ඉහළ යාමට හේතු විය හැක.",
+    "description": "This describes the 'complete' filtering mode"
+  },
+  "noFilteringModeDescription": {
+    "message": "පෙරීමක් නොවන අඩවි ලැයිස්තුව.",
+    "description": "A short description for the editable field which lists trusted sites"
+  },
+  "noFilteringModePlaceholder": {
+    "message": "[සත්කාරක පමණි]\nexample.com\ngames.example\n...",
+    "description": "Default text for in edit field"
+  },
+  "behaviorSectionLabel": {
+    "message": "හැසිරීම",
+    "description": "The header text for the 'Behavior' section"
+  },
+  "autoReloadLabel": {
+    "message": "පෙරීමේ ප්‍රකාරය වෙනස් වූ විට පිටුව ස්වයංක්‍රීයව යළි පූරණය කරන්න",
+    "description": "Label for a checkbox in the options page"
+  },
+  "showBlockedCountLabel": {
+    "message": "මෙවලම් තීරු නිරූපකයේ අවහිර කළ ඉල්ලීම් ගණන පෙන්වන්න",
+    "description": "Label for a checkbox in the options page"
+  },
+  "enableStrictBlockLabel": {
+    "message": "දැඩි අවහිර කිරීම සක්‍රීය කරන්න",
+    "description": "Label for a checkbox in the options page"
+  },
+  "enableStrictBlockLegend": {
+    "message": "අනවශ්‍ය විය හැකි අඩවි වෙත සංචාලනය අවහිර කරනු ලබන අතර, ඉදිරියට යාමට ඔබට විකල්පය ලබා දෙනු ඇත.",
+    "description": "Short description for a checkbox in the options page"
+  },
+  "enablePopupBlockLabel": {
+    "message": "Enable pop-up blocking",
+    "description": "Label for a checkbox in the options page"
+  },
+  "enablePopupBlockLegend": {
+    "message": "When active, matching filters will automatically close unwanted browser tabs created by websites.",
+    "description": "Short description for a checkbox in the options page"
+  },
+  "sandboxEditorLabel": {
+    "message": "Filter-creation sandbox",
+    "description": "Header for filter-creation section in the dashboard"
+  },
+  "developerModeLabel": {
+    "message": "Developer mode",
+    "description": "Label for a checkbox in the options page"
+  },
+  "developerModeLegend": {
+    "message": "Enables access to features suitable for technical users.",
+    "description": "Short description for a checkbox in the options page"
+  },
+  "settingsBackupRestoreLabel": {
+    "message": "Backup",
+    "description": "The header text for the back up/restore section"
+  },
+  "settingsBackupRestoreSummary": {
+    "message": "Back up your custom settings to a file, or restore your custom settings from a file.",
+    "description": "A summary description of the back up/restore section."
+  },
+  "settingsBackupRestoreLegend": {
+    "message": "Restoring will overwrite all your current custom settings.",
+    "description": "Important information about the back up/restore section."
+  },
+  "findListsPlaceholder": {
+    "message": "ලැයිස්තු සොයන්න",
+    "description": "Placeholder for the input field used to find lists"
+  },
+  "strictblockTitle": {
+    "message": "පිටුව අවහිරයි",
+    "description": "Web page title for the strict-blocked page"
+  },
+  "strictblockSentence1": {
+    "message": "AdReaper Lite විසින් පහත පිටුව පූරණය වීම වළක්වා ඇත:",
+    "description": "Sentence used in the strict-blocked page"
+  },
+  "strictblockReasonSentence1": {
+    "message": "{{listname}}හි ගැළපෙන පෙරහනක් නිසා පිටුව අවහිර කරන ලදී.",
+    "description": "Text informing about what is causing the page to be blocked"
+  },
+  "strictblockRedirectSentence1": {
+    "message": "අවහිර කළ පිටුව වෙනත් අඩවියකට හරවා යැවීමට අවශ්‍යයි. ඔබ ඉදිරියට යාමට තෝරා ගන්නේ නම්, ඔබ කෙලින්ම මෙහි සංචාලනය කරනු ඇත: {{url}}",
+    "description": "Text warning about an incoming redirect"
+  },
+  "strictblockNoParamsPrompt": {
+    "message": "පරාමිතීන් නොමැතිව",
+    "description": "Label to be used for the parameter-less URL"
+  },
+  "strictblockBack": {
+    "message": "ආපසු යන්න",
+    "description": "A button to go back to the previous web page"
+  },
+  "strictblockClose": {
+    "message": "මෙම කවුළුව වසන්න",
+    "description": "A button to close the current tab"
+  },
+  "strictblockDontWarn": {
+    "message": "මෙම අඩවිය ගැන මට නැවත අනතුරු අඟවන්න එපා.",
+    "description": "Label for checkbox in document-blocked page"
+  },
+  "strictblockProceed": {
+    "message": "ඉදිරියට",
+    "description": "A button to navigate to the blocked page"
+  },
+  "zapperTipEnter": {
+    "message": "මූලද්‍රව්‍ය zapper ප්‍රකාරයට ඇතුළු වන්න",
+    "description": "Tooltip for the button used to enter zapper mode"
+  },
+  "zapperTipQuit": {
+    "message": "මූලද්‍රව්‍ය zapper ප්‍රකාරයෙන් ඉවත් වන්න",
+    "description": "Tooltip for the button used to exit zapper mode"
+  },
+  "pickerTipEnter": {
+    "message": "Create a custom filter",
+    "description": "Label for the menu entry to create cosmetic filters"
+  },
+  "unpickerTipEnter": {
+    "message": "Remove a custom filter",
+    "description": "Label for the menu entry to delete cosmetic filters"
+  },
+  "developDropdownLabel": {
+    "message": "View:",
+    "description": "A label of a dropdown list"
+  },
+  "developOptionFilteringModeDetails": {
+    "message": "Filtering mode details",
+    "description": "An option in a dropdown list"
+  },
+  "developOptionCustomDnrRules": {
+    "message": "Custom DNR rules",
+    "description": "An option in a dropdown list"
+  },
+  "developOptionDnrRulesOf": {
+    "message": "DNR rules of …",
+    "description": "A section header in a dropdown list"
+  },
+  "developOptionDynamicRuleset": {
+    "message": "Dynamic ruleset",
+    "description": "An option in a dropdown list"
+  },
+  "developOptionSessionRuleset": {
+    "message": "Session ruleset",
+    "description": "An option in a dropdown list"
+  },
+  "saveButton": {
+    "message": "Save",
+    "description": "Text for buttons used to save changes"
+  },
+  "revertButton": {
+    "message": "Revert",
+    "description": "Text for buttons used to revert changes"
+  },
+  "addButton": {
+    "message": "Add",
+    "description": "Text for buttons used to add content"
+  },
+  "importAndAppendButton": {
+    "message": "Import and append…",
+    "description": "Text for buttons used to import and append content"
+  },
+  "exportButton": {
+    "message": "Export…",
+    "description": "Text for buttons used to export content"
+  },
+  "backupButton": {
+    "message": "Back up…",
+    "description": "Text for buttons used to back up content"
+  },
+  "restoreButton": {
+    "message": "Restore…",
+    "description": "Text for buttons used to restore content"
+  },
+  "resetToDefaultButton": {
+    "message": "Reset to default settings…",
+    "description": "Text for buttons used to reset configurations to default"
+  },
+  "resetToDefaultConfirm": {
+    "message": "All your custom settings will be removed. Do you really want to reset to default settings?",
+    "description": "Message asking user to confirm reset to default settings"
+  },
+  "dnrRulesWarning": {
+    "message": "Do not add content from untrusted sources",
+    "description": "Short description of the DNR rules editor pane"
+  },
+  "dnrRulesCountInfo": {
+    "message": "Number of registered rules: {count}",
+    "description": "Short sentence to report the number of currently registered DNR rules"
+  },
+  "pickerSliderLabel": {
+    "message": "Move the slider to select the best match",
+    "description": "Label to describe the purpose of the slider"
+  },
+  "pickerPick": {
+    "message": "Pick",
+    "description": "Text for the button to re-enter element-picking mode"
+  },
+  "pickerPreview": {
+    "message": "Preview",
+    "description": "Text for the button to activate preview mode"
+  },
+  "pickerCreate": {
+    "message": "Create",
+    "description": "Text for the button to create the filter"
+  },
+  "unpickerUsage": {
+    "message": "Select a filter below to highlight matching elements in the web page. Click the trash can to remove a filter.",
+    "description": "Summary description on how to use the tool to remove custom filters"
+  }
+}
